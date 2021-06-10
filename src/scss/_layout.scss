@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Condensed&family=Roboto&display=swap');
+
+$large-breakpoint: 1280px;
+$medium-breakpoint: 768px;
+$max-width: 1280px;
+
+@mixin breakpoint($point) {
+  @if $point == large {
+    @media (min-width: $large-breakpoint) {
+      @content ;
+    }
+  } @else if $point == medium {
+    @media (min-width: $medium-breakpoint) {
+      @content ;
+    }
+  } @else if $point == mobile {
+    @media (max-width: $medium-breakpoint) {
+      @content ;
+    }
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.25rem;
+  line-height: 2rem;
+}
+
+main {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 1rem;
+
+  title, h1, h2, h3 {
+    font-family: 'Encode Sans Condensed', sans-serif;
+  }
+}
+
+hr.fade-edges {
+  margin: 2rem 0;
+  height: 1px;
+  border: 0;
+  background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, #666));
+}
+
+footer {
+  max-width: $max-width;
+  margin: 2rem auto;
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+
+  a {
+    color: #666;
+  }
+}

@@ -1,0 +1,136 @@
+@import 'layout';
+
+main.recipe {
+  title {
+    display: block;
+    font-size: 3rem;
+    margin: 2rem 0;
+    line-height: 3rem;
+  }
+
+  .content-parent {
+    display: block;
+
+    @include breakpoint(large) {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 3rem;
+    }
+  }
+
+  .ingredients-wrapper {
+    @include breakpoint(large) {
+      flex: 0 0 300px;
+      margin-right: 2rem;
+    }
+
+    .ingredients {
+      padding: 1rem;
+      background: #eee;
+
+      h1 {
+        margin-top: 0;
+      }
+
+      ul {
+        @include breakpoint(medium) {
+          columns: 2;
+        }
+        @include breakpoint(large) {
+          columns: 1;
+        }
+
+        li {
+          padding: 0.5rem 0;
+        }
+      }
+    }
+  }
+
+  .instructions {
+    @include breakpoint(large) {
+      flex: 0 1 auto;
+
+      h1:first-child {
+        margin-top: 1rem;
+      }
+    }
+
+    ol {
+      list-style: none;
+      counter-reset: item;
+
+      padding: 0 3rem;
+
+      li {
+        counter-increment: item;
+        padding: 1rem 0;
+        position: relative;
+
+        margin-top: 1rem;
+
+        p:first-child {
+          margin-top: 0;
+        }
+      }
+
+      li:before {
+        position: absolute;
+        left: -3rem;
+        top: 0;
+        transform: translateY(25%);
+        content: counter(item);
+        background: #666;
+        border-radius: 100%;
+        color: white;
+        width: 2em;
+        height: 2em;
+        text-align: center;
+        line-height: 2em;
+        display: inline-block;
+      }
+    }
+  }
+
+  .stats-bar {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    @include breakpoint(medium) {
+      flex-direction: row;
+    }
+
+    margin: 2rem 0;
+
+    .stats-item {
+      margin: 0.5rem 1rem;
+
+      @include breakpoint(medium) {
+        margin: 0;
+      }
+
+      svg {
+        color: #999;
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
+  .tips {
+    padding: 1rem;
+    background: #eee;
+
+    h1 {
+      margin-top: 0;
+
+      svg {
+        color: #999;
+      }
+    }
+
+    li {
+      margin-top: 2rem;
+    }
+  }
+}
