@@ -6,14 +6,15 @@ import { faChartPie, faClock, faLightbulb, faTag, faUser } from '@fortawesome/fr
 import FancyHR from '../components/FancyHR';
 import Layout from '../templates/Layout';
 import marked from 'marked';
-import DOMPurify from 'dompurify';
 
 import 'react-image-gallery/styles/css/image-gallery.css';
 import '../scss/recipe.scss';
 
+const sanitizeHtml = require('sanitize-html');
+
 const Markdown = ({ children, renderAs = 'div' }) => {
   const RenderAs = renderAs;
-  return <RenderAs dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(children)) }} />;
+  return <RenderAs dangerouslySetInnerHTML={{ __html: sanitizeHtml(marked(children)) }} />;
 };
 
 const StatsItem = ({ children, icon }) => {
