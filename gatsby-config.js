@@ -3,16 +3,22 @@ module.exports = {
     title: "Bud's Recipes",
   },
   plugins: [
-    "gatsby-plugin-sass",
+    'gatsby-plugin-sass',
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "recipe",
-        path: `${__dirname}/src/recipes/`
-      }
-    }
+        name: 'recipe',
+        path: `${__dirname}/src/recipes/`,
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: `${__dirname}/src/images`,
+      },
+    },
   ],
 };

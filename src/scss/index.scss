@@ -1,0 +1,132 @@
+@import 'layout';
+
+main.index {
+  .lead {
+    margin-bottom: 16px;
+
+    @include breakpoint(large) {
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: row;
+
+      & > * {
+        flex: 1 1 50%;
+      }
+    }
+
+    .cover-photo {
+      border-radius: 20px;
+      overflow: hidden;
+
+      @include breakpoint(large) {
+        margin-left: 16px;
+      }
+    }
+
+    .cover-text {
+      position: relative;
+
+      title {
+        display: block;
+        font-family: Sacramento, sans-serif;
+        font-size: 3rem;
+        line-height: 4rem;
+        text-align: center;
+
+        @include breakpoint(medium) {
+          font-size: 8rem;
+          line-height: 10rem;
+        }
+
+        @include breakpoint(large) {
+          text-align: left;
+          position: absolute;
+          top: 10rem;
+          left: 2rem;
+          transform: rotate(-30deg);
+        }
+      }
+
+      p {
+        font-weight: 300;
+
+        @include breakpoint(large) {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          text-align: right;
+          padding: 1rem;
+          margin: 0;
+          width: 50%;
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+
+  .newest-recipes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+
+    @include breakpoint(medium) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include breakpoint(large) {
+      grid-template-columns: repeat(4, 1fr);
+
+    }
+
+    .recipe-card {
+      color: white;
+      display: block;
+      text-decoration: none;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+
+      @include breakpoint(large) {
+        margin: 0;
+
+        background: black;
+      }
+
+      & > .details {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 25%);
+
+        @include breakpoint(large) {
+          bottom: auto;;
+          top: 0;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          opacity: 0;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        & > p {
+          padding: 2rem 1rem 1rem 1rem;
+
+          @include breakpoint(large) {
+            padding: 1rem;
+          }
+        }
+      }
+
+      @include breakpoint(large) {
+        &:hover > .details {
+          opacity: 100%;
+          transition: opacity 0.25s;
+        }
+      }
+    }
+  }
+}
