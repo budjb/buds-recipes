@@ -68,6 +68,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       ingredientSections: [IngredientSection!]!
       instructionSections: [InstructionSection!]!
       tips: String
+      featured: Boolean
     }
   `);
 };

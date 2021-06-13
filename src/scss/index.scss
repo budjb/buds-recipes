@@ -77,55 +77,55 @@ main.index {
       grid-template-columns: repeat(4, 1fr);
 
     }
+  }
 
-    .recipe-card {
-      color: white;
-      display: block;
-      text-decoration: none;
-      border-radius: 20px;
-      overflow: hidden;
-      cursor: pointer;
-      position: relative;
+  .recipe-card {
+    color: white;
+    display: block;
+    text-decoration: none;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+
+    @include breakpoint(large) {
+      margin: 0;
+
+      background: black;
+    }
+
+    & > .details {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 25%);
 
       @include breakpoint(large) {
-        margin: 0;
-
-        background: black;
+        bottom: auto;;
+        top: 0;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      & > .details {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 25%);
+      & > p {
+        padding: 2rem 1rem 1rem 1rem;
 
         @include breakpoint(large) {
-          bottom: auto;;
-          top: 0;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.5);
-          opacity: 0;
-          color: #fff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        & > p {
-          padding: 2rem 1rem 1rem 1rem;
-
-          @include breakpoint(large) {
-            padding: 1rem;
-          }
+          padding: 1rem;
         }
       }
+    }
 
-      @include breakpoint(large) {
-        &:hover > .details {
-          opacity: 100%;
-          transition: opacity 0.25s;
-        }
+    @include breakpoint(large) {
+      &:hover > .details {
+        opacity: 100%;
+        transition: opacity 0.25s;
       }
     }
   }
