@@ -51,6 +51,15 @@ hr.fade-edges {
 header {
   max-width: $max-width;
   margin: 0 auto;
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  & + hr.layout-header-divider {
+    margin-top: 16px;
+  }
 
   .title {
     display: block;
@@ -63,25 +72,89 @@ header {
     text-decoration: none;
   }
 
-  .search {
-    flex: 0 0 400px;
-    position: relative;
+  .menu {
+    font-size: 2rem;
+    color: #666;
 
-    input {
-      border: 1px solid #aaa;
-      border-radius: 9999px;
-      padding: 0.5rem 1rem;
-      outline: none;
-      box-sizing: border-box;
-      width: 100%;
+    @include breakpoint(medium) {
+      position: relative;
     }
-  }
 
-  @include breakpoint(medium) {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    .menu-button {
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    &.active {
+      .menu-button {
+        transform: rotate(-180deg);
+      }
+      & > .menu-content {
+        display: block;
+      }
+
+    }
+
+    &.active, &:hover {
+      color: #000;
+    }
+
+    .menu-content {
+      width: 100%;
+      box-sizing: border-box;
+      display: none;
+      font-size: 1rem;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 10;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+
+      @include breakpoint(medium) {
+        width: auto;
+      }
+
+      .search {
+        position: relative;
+
+        input {
+          border: 1px solid #aaa;
+          border-radius: 9999px;
+          padding: 0.5rem 1rem;
+          outline: none;
+          box-sizing: border-box;
+          width: 100%;
+
+          @include breakpoint(medium) {
+            width: 250px;
+          }
+        }
+      }
+
+      a {
+        color: black;
+        text-decoration: none;
+      }
+
+      h3 {
+        margin: 1rem 0;
+      }
+
+      ul {
+        padding-left: 1rem;
+
+        li {
+          list-style: none;
+
+          a {
+            display: block;
+          }
+        }
+      }
+    }
   }
 }
 

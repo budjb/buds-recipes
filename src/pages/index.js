@@ -6,10 +6,13 @@ import { GatsbyImage } from 'gatsby-plugin-image';
 
 const RecipeCard = ({ recipe, className = '' }) => {
   return (
-    <Link to={recipe.slug} className={`recipe-card cover-photo ${className}`}>
+    <Link to={recipe.path} className={`recipe-card cover-photo ${className}`}>
       <GatsbyImage alt={recipe.name} image={recipe.imageFiles[0].childImageSharp.gatsbyImageData} />
       <div className="details">
-        <p>{recipe.name}</p>
+        <div>
+          <h3>{recipe.name}</h3>
+          <p>{recipe.preview}</p>
+        </div>
       </div>
     </Link>
   );
@@ -26,7 +29,7 @@ const IndexPage = ({ data }) => {
           <title>Things We Make</title>
           <p>Welcome to our collection of recipes for things we love to make in our home. From us to you, enjoy!</p>
         </div>
-        <RecipeCard recipe={featured} className={'cover-photo'} />
+        <RecipeCard recipe={featured} className="cover-photo" />
       </div>
 
       <div className="newest-recipes">
@@ -45,8 +48,9 @@ export const pageQuery = graphql`
     featured: allRecipe(filter: { featured: { eq: true } }, limit: 1, sort: { fields: published, order: DESC }) {
       nodes {
         id
-        slug
+        path
         name
+        preview
         imageFiles {
           childImageSharp {
             gatsbyImageData(layout: CONSTRAINED, width: 1280, aspectRatio: 1)
@@ -57,8 +61,9 @@ export const pageQuery = graphql`
     latest: allRecipe(limit: 5, sort: { fields: published, order: DESC }) {
       nodes {
         id
-        slug
+        path
         name
+        preview
         imageFiles {
           childImageSharp {
             gatsbyImageData(layout: CONSTRAINED, width: 1280, aspectRatio: 1)

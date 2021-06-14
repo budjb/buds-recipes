@@ -33,25 +33,28 @@ module.exports = {
               id
               keywords
               name
-              slug
-              description
+              path
+              preview
               imageFiles {
-                id
+                childImageSharp {
+                  gatsbyImageData(layout: CONSTRAINED, width: 768, aspectRatio: 1.5)
+                }
               }
             }
           }
         }`,
         ref: 'id',
         index: ['name', 'keywords'],
-        store: ['id', 'name', 'slug', 'coverImage', 'description'],
+        store: ['id', 'name', 'path', 'coverImage', 'preview'],
 
         normalizer: ({ data }) => {
           return data.allRecipe.nodes.map(node => ({
             id: node.id,
             name: node.name,
             keywords: node.keywords,
-            slug: node.slug,
-            coverImage: node.imageFiles && node.imageFiles[0].id
+            path: node.path,
+            preview: node.preview,
+            coverImage: node.imageFiles && node.imageFiles[0].childImageSharp.gatsbyImageData
           }));
         },
       },

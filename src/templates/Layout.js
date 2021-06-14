@@ -1,6 +1,9 @@
-import React, { createRef } from 'react';
+import React, { createRef, useState } from 'react';
 import FancyHR from '../components/FancyHR';
-import { Link, navigate } from 'gatsby';
+import { graphql, Link, navigate, StaticQuery } from 'gatsby';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import _ from 'lodash';
 
 const buildCopyrightYears = () => {
   const startYear = 2021;
@@ -13,7 +16,8 @@ const buildCopyrightYears = () => {
   }
 };
 
-const Layout = ({ children, className, query }) => {
+const Layout = ({ children, className, query = '' }) => {
+  const [showMenu, setShowMenu] = useState(false);
   const searchInput = createRef();
 
   const handleSearch = event => {
@@ -22,6 +26,8 @@ const Layout = ({ children, className, query }) => {
 
     if (q) {
       navigate(`/search?q=${q}`);
+    } else {
+      navigate('/');
     }
   };
 
@@ -37,13 +43,41 @@ const Layout = ({ children, className, query }) => {
         <Link to="/" className="title">
           Things We Make
         </Link>
-        <div className="search">
-          <form onSubmit={handleSearch}>
-            <input type="text" defaultValue={query} ref={searchInput} placeholder="Search..." />
-          </form>
+        <div className={`menu ${showMenu && 'active'}`}>
+          <div className="menu-button">
+            <FontAwesomeIcon icon={faBars} onClick={() => setShowMenu(!showMenu)} />
+          </div>
+          <div className="menu-content">
+            <div className="search">
+              <form onSubmit={handleSearch}>
+                <input type="text" defaultValue={query} ref={searchInput} placeholder="Search..." />
+              </form>
+            </div>
+            <h3>Categories</h3>
+            <StaticQuery
+              query={graphql`
+                query CategoriesQuery {
+                  categories: allRecipe {
+                    group(field: categories) {
+                      fieldValue
+                    }
+                  }
+                }
+              `}
+              render={data => (
+                <ul>
+                  {data.categories.group.map(it => (
+                    <li>
+                      <Link to={`/categories/${it.fieldValue}`}>{_.startCase(_.camelCase(it.fieldValue))}</Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            />
+          </div>
         </div>
       </header>
-      <FancyHR />
+      <FancyHR className="layout-header-divider" />
       <main {...props}>{children}</main>
 
       <FancyHR />
