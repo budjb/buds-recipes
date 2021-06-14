@@ -31,7 +31,7 @@ const IndexPage = ({ data }) => {
 
       <div className="newest-recipes">
         {latest.map(recipe => {
-          return <RecipeCard recipe={recipe} key={recipe.id}/>;
+          return <RecipeCard recipe={recipe} key={recipe.id} />;
         })}
       </div>
     </Layout>
@@ -65,6 +65,10 @@ export const pageQuery = graphql`
           }
         }
       }
+    }
+    localSearchRecipes {
+      index
+      store
     }
   }
 `;
