@@ -54,10 +54,11 @@ module.exports = {
             keywords: node.keywords,
             path: node.path,
             preview: node.preview,
-            coverImage: node.imageFiles && node.imageFiles[0].childImageSharp.gatsbyImageData
+            coverImage: node.imageFiles && node.imageFiles[0].childImageSharp.gatsbyImageData,
           }));
         },
       },
     },
+    'gatsby-plugin-react-helmet',
   ],
 };

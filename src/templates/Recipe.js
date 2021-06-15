@@ -9,6 +9,7 @@ import marked from 'marked';
 
 import 'react-image-gallery/styles/css/image-gallery.css';
 import '../scss/recipe.scss';
+import {Helmet} from "react-helmet";
 
 const sanitizeHtml = require('sanitize-html');
 
@@ -72,6 +73,9 @@ const Recipe = ({ data }) => {
 
   return (
     <Layout className="recipe">
+      <Helmet>
+        <title>Things We Make - {recipe.name}</title>
+      </Helmet>
       {imagesConfig.length && (
         <ImageGallery
           items={imagesConfig}

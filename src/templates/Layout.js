@@ -3,7 +3,7 @@ import FancyHR from '../components/FancyHR';
 import { graphql, Link, navigate, StaticQuery } from 'gatsby';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import _ from 'lodash';
+import { formatCategorySlug } from '../util';
 
 const buildCopyrightYears = () => {
   const startYear = 2021;
@@ -99,11 +99,12 @@ const Layout = ({ children, className, query = '' }) => {
               `}
               render={data => (
                 <ul>
-                  {data.categories.group.map(it => (
-                    <li>
-                      <Link to={`/categories/${it.fieldValue}`}>{_.startCase(_.camelCase(it.fieldValue))}</Link>
+                  {data.categories.group.map(({ fieldValue: slug }) => (
+                    <li key={slug}>
+                      <Link to={`/categories/${slug}`}>{formatCategorySlug(slug)}</Link>
                     </li>
                   ))}
+                  <Link to="/categories"><small>More...</small></Link>
                 </ul>
               )}
             />

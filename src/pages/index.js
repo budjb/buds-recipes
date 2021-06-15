@@ -3,6 +3,7 @@ import Layout from '../templates/Layout';
 import '../scss/index.scss';
 import { graphql, Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
+import {Helmet} from "react-helmet";
 
 const RecipeCard = ({ recipe, className = '' }) => {
   return (
@@ -24,6 +25,9 @@ const IndexPage = ({ data }) => {
 
   return (
     <Layout className="index">
+      <Helmet>
+        <title>Things We Make - Home</title>
+      </Helmet>
       <div className="lead">
         <div className="cover-text">
           <title>Things We Make</title>

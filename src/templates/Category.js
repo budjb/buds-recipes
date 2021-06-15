@@ -2,15 +2,17 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../templates/Layout';
 import '../scss/category.scss';
-import _ from 'lodash';
+import { formatCategorySlug } from '../util';
 import RecipeCardSection from '../components/RecipeCardSection';
-
-const categoryName = slug => _.startCase(_.camelCase(slug));
+import { Helmet } from 'react-helmet';
 
 const CategoryPage = ({ data, pageContext }) => {
   return (
     <Layout className="category">
-      <h1>Category: {categoryName(pageContext.slug)}</h1>
+      <Helmet>
+        <title>Things We Make - {formatCategorySlug(pageContext.slug)}</title>
+      </Helmet>
+      <h1>Category: {formatCategorySlug(pageContext.slug)}</h1>
       <RecipeCardSection>
         {data.allRecipe.nodes.map(recipe => {
           return (

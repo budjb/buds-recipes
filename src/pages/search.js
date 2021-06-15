@@ -8,6 +8,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import RecipeCardSection from '../components/RecipeCardSection';
 
 import '../scss/search.scss';
+import {Helmet} from "react-helmet";
 
 const parseSearch = query => {
   return new URLSearchParams(query).get('q');
@@ -29,6 +30,9 @@ const NoResults = ({ query }) => {
 
   return (
     <Layout query={query} className="search-no-results">
+      <Helmet>
+        <title>Things We Make - Search Results</title>
+      </Helmet>
       <h1>
         Nothing Found <FontAwesomeIcon icon={faFrown} />
       </h1>
@@ -67,6 +71,9 @@ const SearchPage = ({ data, location }) => {
   } else {
     return (
       <Layout query={query} className="search-results">
+        <Helmet>
+          <title>Things We Make - Search Results</title>
+        </Helmet>
         <h1>Results for: {query}</h1>
         <RecipeCardSection>
           {results.map(recipe => {
