@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react';
+import React, { createRef, useCallback, useEffect, useState } from 'react';
 import FancyHR from '../components/FancyHR';
 import { graphql, Link, navigate, StaticQuery } from 'gatsby';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +18,40 @@ const buildCopyrightYears = () => {
 
 const Layout = ({ children, className, query = '' }) => {
   const [showMenu, setShowMenu] = useState(false);
+  const menuRef = createRef();
+  const menuButtonRef = createRef();
   const searchInput = createRef();
+
+  const handleMenuClick = useCallback(
+    event => {
+      if (menuButtonRef && menuButtonRef.current.contains(event.target) && !showMenu) {
+        setShowMenu(true);
+      } else if (menuRef && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    },
+    [menuRef, menuButtonRef, setShowMenu, showMenu]
+  );
+
+  const handleEscape = useCallback(
+    event => {
+      if (event.keyCode === 27 && showMenu) {
+        event.preventDefault();
+        setShowMenu(false);
+      }
+    },
+    [showMenu, setShowMenu]
+  );
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleMenuClick);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('mousedown', handleMenuClick);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [handleMenuClick, handleEscape]);
 
   const handleSearch = event => {
     event.preventDefault();
@@ -44,10 +77,10 @@ const Layout = ({ children, className, query = '' }) => {
           Things We Make
         </Link>
         <div className={`menu ${showMenu && 'active'}`}>
-          <div className="menu-button">
-            <FontAwesomeIcon icon={faBars} onClick={() => setShowMenu(!showMenu)} />
+          <div className="menu-button" ref={menuButtonRef}>
+            <FontAwesomeIcon icon={faBars} />
           </div>
-          <div className="menu-content">
+          <div className="menu-content" ref={menuRef}>
             <div className="search">
               <form onSubmit={handleSearch}>
                 <input type="text" defaultValue={query} ref={searchInput} placeholder="Search..." />
