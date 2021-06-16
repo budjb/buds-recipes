@@ -104,7 +104,9 @@ const Layout = ({ children, className, query = '' }) => {
                       <Link to={`/categories/${slug}`}>{formatCategorySlug(slug)}</Link>
                     </li>
                   ))}
-                  <Link to="/categories"><small>More...</small></Link>
+                  <Link to="/categories">
+                    <small>More...</small>
+                  </Link>
                 </ul>
               )}
             />

@@ -3,7 +3,7 @@ import Layout from '../templates/Layout';
 import '../scss/index.scss';
 import { graphql, Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
-import {Helmet} from "react-helmet";
+import { Helmet } from 'react-helmet';
 
 const RecipeCard = ({ recipe, className = '' }) => {
   return (

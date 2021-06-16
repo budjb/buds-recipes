@@ -9,7 +9,7 @@ import marked from 'marked';
 
 import 'react-image-gallery/styles/css/image-gallery.css';
 import '../scss/recipe.scss';
-import {Helmet} from "react-helmet";
+import { Helmet } from 'react-helmet';
 
 const sanitizeHtml = require('sanitize-html');
 
@@ -33,7 +33,7 @@ const StatsBar = ({ children }) => {
 
 const IngredientSection = ({ ingredients, name }) => {
   const nameContent = name && <strong>{name}</strong>;
-  const ingredientContent = ingredients.map(text => <li>{text}</li>);
+  const ingredientContent = ingredients.map((text, i) => <li key={i}>{text}</li>);
 
   return (
     <>
@@ -45,7 +45,11 @@ const IngredientSection = ({ ingredients, name }) => {
 
 const InstructionsSection = ({ instructions, name }) => {
   const nameContent = name && <strong>{name}</strong>;
-  const instructionContent = instructions.map(text => <Markdown renderAs="li">{text}</Markdown>);
+  const instructionContent = instructions.map((text, i) => (
+    <Markdown renderAs="li" key={i}>
+      {text}
+    </Markdown>
+  ));
 
   return (
     <>
@@ -108,16 +112,16 @@ const Recipe = ({ data }) => {
         <div className="ingredients-wrapper">
           <div className="ingredients">
             <h1>Ingredients</h1>
-            {recipe.ingredientSections.map(section => {
-              return <IngredientSection name={section.name} ingredients={section.ingredients} />;
+            {recipe.ingredientSections.map((section, i) => {
+              return <IngredientSection key={i} name={section.name} ingredients={section.ingredients} />;
             })}
           </div>
         </div>
 
         <div className="instructions">
           <h1>Instructions</h1>
-          {recipe.instructionSections.map(section => {
-            return <InstructionsSection name={section.name} instructions={section.instructions} />;
+          {recipe.instructionSections.map((section, i) => {
+            return <InstructionsSection key={i} name={section.name} instructions={section.instructions} />;
           })}
         </div>
       </div>

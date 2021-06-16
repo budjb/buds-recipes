@@ -8,6 +8,20 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     {
+      resolve: 'gatsby-source-google-photos',
+      options: {
+        albumsTitles: ['Recipes Website'],
+        photosMaxWidth: 1280,
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'images',
+        path: `${__dirname}/src/images`,
+      },
+    },
+    {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'recipe',
@@ -15,17 +29,10 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        path: `${__dirname}/src/images`,
-      },
-    },
-    {
       resolve: 'gatsby-plugin-local-search',
       options: {
         name: 'recipes',
         engine: 'flexsearch',
-        // engineOptions: 'speed',
 
         query: `{
           allRecipe {

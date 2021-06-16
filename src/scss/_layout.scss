@@ -7,20 +7,21 @@ $max-width: 1248px;
 @mixin breakpoint($point) {
   @if $point == large {
     @media (min-width: $large-breakpoint) {
-      @content ;
+      @content;
     }
   } @else if $point == medium {
     @media (min-width: $medium-breakpoint) {
-      @content ;
+      @content;
     }
   } @else if $point == mobile {
     @media (max-width: $medium-breakpoint) {
-      @content ;
+      @content;
     }
   }
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }
@@ -41,7 +42,10 @@ main {
   max-width: $max-width;
   margin: 0 auto;
 
-  title, h1, h2, h3 {
+  title,
+  h1,
+  h2,
+  h3 {
     font-family: 'Encode Sans Condensed', sans-serif;
   }
 }
@@ -97,10 +101,10 @@ header {
       & > .menu-content {
         display: block;
       }
-
     }
 
-    &.active, &:hover {
+    &.active,
+    &:hover {
       color: #000;
     }
 

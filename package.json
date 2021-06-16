@@ -12,7 +12,9 @@
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "clean": "gatsby clean",
+    "token": "gatsby-source-google-photos-token",
+    "format": "prettier --write \"**/*.{js,jsx,json,md,css,scss}\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -28,6 +30,7 @@
     "gatsby-plugin-sass": "^4.7.1",
     "gatsby-plugin-sharp": "^3.7.1",
     "gatsby-source-filesystem": "^3.7.1",
+    "gatsby-source-google-photos": "^2.4.4",
     "gatsby-transformer-sharp": "^3.7.1",
     "install": "^0.13.0",
     "js-yaml": "^4.1.0",

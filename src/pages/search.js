@@ -8,7 +8,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import RecipeCardSection from '../components/RecipeCardSection';
 
 import '../scss/search.scss';
-import {Helmet} from "react-helmet";
+import { Helmet } from 'react-helmet';
 
 const parseSearch = query => {
   return new URLSearchParams(query).get('q');

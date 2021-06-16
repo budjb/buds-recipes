@@ -3,7 +3,7 @@ import { graphql, Link } from 'gatsby';
 import Layout from '../templates/Layout';
 import { formatCategorySlug } from '../util';
 import _ from 'lodash';
-import {Helmet} from "react-helmet";
+import { Helmet } from 'react-helmet';
 
 const Categories = ({ data }) => {
   return (

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require(`path`);
 const yaml = require('js-yaml');
-const { createRemoteFileNode } = require('gatsby-source-filesystem');
+const { createRemoteFileNode, createFilePath } = require('gatsby-source-filesystem');
 const _ = require('lodash');
 
 exports.createPages = async ({ graphql, actions }) => {
@@ -18,6 +18,7 @@ exports.createPages = async ({ graphql, actions }) => {
             node {
               id
               path
+              images
             }
           }
         }
@@ -41,6 +42,7 @@ exports.createPages = async ({ graphql, actions }) => {
       path: recipe.path,
       component: recipeTemplate,
       context: {
+        type: 'Recipe',
         id: recipe.id,
       },
     });
@@ -53,9 +55,9 @@ exports.createPages = async ({ graphql, actions }) => {
       path: `categories/${slug}`,
       component: categoryTemplate,
       context: {
-        slug: slug
-      }
-    })
+        slug: slug,
+      },
+    });
   }
 };
 
@@ -95,7 +97,15 @@ exports.createSchemaCustomization = ({ actions }) => {
   `);
 };
 
-exports.onCreateNode = async ({ node, actions: { createNode }, store, cache, createNodeId, createContentDigest }) => {
+exports.onCreateNode = async ({
+  node,
+  actions: { createNode },
+  createNodeId,
+  createContentDigest,
+  store,
+  cache,
+  getNodesByType,
+}) => {
   if (node.internal.type === 'File' && node.sourceInstanceName === 'recipe') {
     if (node.extension !== 'yaml') {
       return;
@@ -105,7 +115,7 @@ exports.onCreateNode = async ({ node, actions: { createNode }, store, cache, cre
     const data = yaml.load(source);
 
     data.slug = node.name;
-    data.path = `recipes/${data.slug}`
+    data.path = `recipes/${data.slug}`;
 
     if (data.categories) {
       data.categories = data.categories.map(it => _.kebabCase(it));
@@ -124,25 +134,106 @@ exports.onCreateNode = async ({ node, actions: { createNode }, store, cache, cre
 
     await createNode({ ...data, ...nodeMeta });
   } else if (node.internal.type === 'Recipe') {
-    if (node.images) {
-      const fileNodeIds = [];
-
-      for (const url of node.images) {
-        const fileNode = await createRemoteFileNode({
-          url: url,
-          parentNodeId: node.id,
-          createNode,
-          createNodeId,
-          cache,
-          store,
-        });
-
-        if (fileNode) {
-          fileNodeIds.push(fileNode.id);
-        }
-      }
-
-      node.imageFiles___NODE = fileNodeIds;
+    if (node.images.length) {
+      node.imageFiles___NODE = await loadImageIds(
+        node.id,
+        node.images,
+        getNodesByType,
+        createNode,
+        createNodeId,
+        cache,
+        store
+      );
     }
   }
+};
+
+const loadImageIds = async (nodeId, images, getNodesByType, createNode, createNodeId, cache, store) => {
+  const childNodeIds = [];
+
+  for (const image of parseImages(images)) {
+    if (image.type === 'remote') {
+      const childNode = await createRemoteFileNode({
+        url: image.url,
+        parentNodeId: nodeId,
+        createNode,
+        createNodeId,
+        cache,
+        store,
+      });
+
+      if (childNode) {
+        childNodeIds.push(childNode.id);
+      } else {
+        console.error(`could not load image at URL ${image.url}`);
+      }
+    } else if (image.type === 'file') {
+      const fileNodes = getNodesByType('File');
+
+      const match = fileNodes.find(it => {
+        if (image.sourceInstanceName && image.sourceInstanceName !== it.sourceInstanceName) {
+          return false;
+        }
+
+        return image.relativePath === it.relativePath;
+      });
+
+      if (match) {
+        childNodeIds.push(match.id);
+      } else {
+        console.error(
+          `could not find file node for source instance ${image.sourceInstanceName} and relative path ${image.relativePath}`
+        );
+      }
+    } else if (image.type === 'gphotos') {
+      const photoNodes = getNodesByType('GooglePhotosPhoto');
+
+      const match = photoNodes.find(it => {
+        return image.filename === it.filename;
+      });
+
+      if (match) {
+        childNodeIds.push(match.photo___NODE);
+      } else {
+        console.error(`could not find Google photo for album ${image.album} and filename ${image.filename}`);
+      }
+    }
+  }
+
+  return childNodeIds;
+};
+
+const parseImages = images => {
+  return images.map(image => {
+    let url;
+
+    try {
+      url = new URL(image);
+    } catch {
+      throw Error(`recipe ${node.name} contains unsupported URL ${url}`);
+    }
+
+    const protocol = _.trimEnd(url.protocol, ':');
+
+    if (protocol === 'file') {
+      return {
+        type: 'file',
+        sourceInstanceName: url.host || '__PROGRAMMATIC__',
+        relativePath: _.trimStart(url.pathname, '/'),
+      };
+    } else if (protocol === 'http' || protocol === 'https') {
+      return {
+        type: 'remote',
+        url: image,
+      };
+    } else if (protocol === 'gphotos') {
+      return {
+        type: 'gphotos',
+        album: url.hostname && url.hostname.replace(/\+/g, ' '),
+        filename: _.trimStart(url.pathname, '/'),
+      };
+    } else {
+      throw new Error(`unsupported image scheme type ${protocol}`);
+    }
+  });
 };
