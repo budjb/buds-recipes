@@ -57,7 +57,7 @@ export const pageQuery = graphql`
         preview
         imageFiles {
           childImageSharp {
-            gatsbyImageData(layout: CONSTRAINED, width: 1280, aspectRatio: 1)
+            gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, width: 1280, aspectRatio: 1)
           }
         }
       }
@@ -70,7 +70,7 @@ export const pageQuery = graphql`
         preview
         imageFiles {
           childImageSharp {
-            gatsbyImageData(layout: CONSTRAINED, width: 1280, aspectRatio: 1)
+            gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, width: 1280, aspectRatio: 1)
           }
         }
       }

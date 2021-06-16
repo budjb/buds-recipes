@@ -42,7 +42,7 @@ export const pageQuery = graphql`
         preview
         imageFiles {
           childImageSharp {
-            gatsbyImageData(layout: CONSTRAINED, width: 768, aspectRatio: 1.5)
+            gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, width: 768, aspectRatio: 1.5)
           }
         }
       }

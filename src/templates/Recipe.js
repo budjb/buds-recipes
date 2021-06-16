@@ -161,7 +161,7 @@ export const pageQuery = graphql`
       totalTime
       imageFiles {
         fullSize: childImageSharp {
-          gatsbyImageData(layout: CONSTRAINED, width: 1280, height: 720, sizes: "768,1280")
+          gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, width: 1280, height: 720, sizes: "768,1280")
         }
       }
     }
