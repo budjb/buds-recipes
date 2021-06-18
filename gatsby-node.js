@@ -7,8 +7,8 @@ const _ = require('lodash');
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
 
-  const recipeTemplate = path.resolve(`./src/templates/Recipe.js`);
-  const categoryTemplate = path.resolve(`./src/templates/Category.js`);
+  const recipeTemplate = path.resolve(`./src/templates/recipe.js`);
+  const categoryTemplate = path.resolve(`./src/templates/category.js`);
 
   const result = await graphql(
     `

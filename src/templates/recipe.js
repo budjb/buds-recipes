@@ -3,8 +3,8 @@ import { graphql } from 'gatsby';
 import ImageGallery from 'react-image-gallery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartPie, faClock, faLightbulb, faTag, faUser } from '@fortawesome/free-solid-svg-icons';
-import FancyHR from '../components/FancyHR';
-import Layout from '../templates/Layout';
+import FancyHR from '../components/fancy-hr';
+import Layout from '../templates/layout';
 import marked from 'marked';
 
 import 'react-image-gallery/styles/css/image-gallery.css';

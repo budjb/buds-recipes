@@ -2,10 +2,10 @@ import React, { createRef, useEffect, useState } from 'react';
 import { graphql, navigate } from 'gatsby';
 import { useFlexSearch } from 'react-use-flexsearch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Layout from '../templates/Layout';
+import Layout from '../templates/layout';
 import { faFrown } from '@fortawesome/free-regular-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import RecipeCardSection from '../components/RecipeCardSection';
+import RecipeCardSection from '../components/recipe-card-section';
 
 import '../scss/search.scss';
 import { Helmet } from 'react-helmet';

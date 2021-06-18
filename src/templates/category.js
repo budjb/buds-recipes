@@ -1,9 +1,9 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import Layout from '../templates/Layout';
+import Layout from '../templates/layout';
 import '../scss/category.scss';
 import { formatCategorySlug } from '../util';
-import RecipeCardSection from '../components/RecipeCardSection';
+import RecipeCardSection from '../components/recipe-card-section';
 import { Helmet } from 'react-helmet';
 
 const CategoryPage = ({ data, pageContext }) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
-import Layout from '../templates/Layout';
+import Layout from '../templates/layout';
 import { formatCategorySlug } from '../util';
 import _ from 'lodash';
 import { Helmet } from 'react-helmet';
