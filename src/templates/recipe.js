@@ -19,15 +19,15 @@ const Markdown = ({ children, renderAs = 'div' }) => {
 
 const StatsItem = ({ children, icon }) => {
   return (
-    <div className="px-1 py-3">
-      {icon && <FontAwesomeIcon fixedWidth icon={icon} className="text-muted" />}
+    <div className="px-1 py-2 py-md-3">
+      {icon && <FontAwesomeIcon fixedWidth icon={icon} className="text-muted me-2" />}
       {children}
     </div>
   );
 };
 
 const StatsBar = ({ children }) => {
-  return <div className="d-block d-md-flex flex-row align-content-center justify-content-between">{children}</div>;
+  return <div className="d-block d-md-flex flex-row align-content-center justify-content-between my-2">{children}</div>;
 };
 
 const IngredientSection = ({ ingredients, name }) => {
