@@ -2,6 +2,7 @@
 
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 @import '../../node_modules/bootstrap-icons/font/bootstrap-icons.css';
+@import 'colors';
 
 $large-breakpoint: 1280px;
 $medium-breakpoint: 768px;
@@ -84,4 +85,8 @@ footer {
   a {
     color: #666;
   }
+}
+
+.bg-light-site {
+  background: $bg-light-site;
 }

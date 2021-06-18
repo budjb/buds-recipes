@@ -3,7 +3,6 @@ import { graphql } from 'gatsby';
 import ImageGallery from 'react-image-gallery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartPie, faClock, faLightbulb, faTag, faUser } from '@fortawesome/free-solid-svg-icons';
-import FancyHR from '../components/fancy-hr';
 import Layout from '../templates/layout';
 import marked from 'marked';
 
@@ -20,20 +19,24 @@ const Markdown = ({ children, renderAs = 'div' }) => {
 
 const StatsItem = ({ children, icon }) => {
   return (
-    <div className="stats-item">
-      {icon && <FontAwesomeIcon fixedWidth icon={icon} />}
+    <div className="px-1 py-3">
+      {icon && <FontAwesomeIcon fixedWidth icon={icon} className="text-muted" />}
       {children}
     </div>
   );
 };
 
 const StatsBar = ({ children }) => {
-  return <div className="stats-bar">{children}</div>;
+  return <div className="d-block d-md-flex flex-row align-content-center justify-content-between">{children}</div>;
 };
 
 const IngredientSection = ({ ingredients, name }) => {
   const nameContent = name && <strong>{name}</strong>;
-  const ingredientContent = ingredients.map((text, i) => <li key={i}>{text}</li>);
+  const ingredientContent = ingredients.map((text, i) => (
+    <li key={i} className="py-2">
+      {text}
+    </li>
+  ));
 
   return (
     <>
@@ -76,64 +79,67 @@ const Recipe = ({ data }) => {
   });
 
   return (
-    <Layout className="recipe">
-      <Helmet>
-        <title>Things We Make - {recipe.name}</title>
-      </Helmet>
-      {imagesConfig.length && (
-        <ImageGallery
-          items={imagesConfig}
-          showBullets={true}
-          showIndex={false}
-          showThumbnails={false}
-          lazyLoad={true}
-          showPlayButton={false}
-          showFullscreenButton={false}
-        />
-      )}
-      <StatsBar>
-        <StatsItem icon={faUser}>{recipe.author}</StatsItem>
-        <StatsItem icon={faClock}>{recipe.totalTime}</StatsItem>
-        <StatsItem icon={faChartPie}>{recipe.servings}</StatsItem>
-        <StatsItem icon={faTag}>{recipe.cuisine}</StatsItem>
-      </StatsBar>
+    <Layout className="recipe row justify-content-center">
+      <div className="col-12 col-lg-10">
+        <Helmet>
+          <title>Things We Make - {recipe.name}</title>
+        </Helmet>
+        {imagesConfig.length && (
+          <ImageGallery
+            items={imagesConfig}
+            showBullets={true}
+            showIndex={false}
+            showThumbnails={false}
+            lazyLoad={true}
+            showPlayButton={false}
+            showFullscreenButton={false}
+          />
+        )}
 
-      <FancyHR />
+        <StatsBar>
+          <StatsItem icon={faUser}>{recipe.author}</StatsItem>
+          <StatsItem icon={faClock}>{recipe.totalTime}</StatsItem>
+          <StatsItem icon={faChartPie}>{recipe.servings}</StatsItem>
+          <StatsItem icon={faTag}>{recipe.cuisine}</StatsItem>
+        </StatsBar>
 
-      <title>{recipe.name}</title>
+        <h1 className="my-3">{recipe.name}</h1>
 
-      {recipe.description && (
-        <div className="description">
-          <Markdown>{recipe.description}</Markdown>
-        </div>
-      )}
+        {recipe.description && (
+          <div className="my-5">
+            <Markdown>{recipe.description}</Markdown>
+          </div>
+        )}
 
-      <div className="content-parent">
-        <div className="ingredients-wrapper">
-          <div className="ingredients">
-            <h1>Ingredients</h1>
-            {recipe.ingredientSections.map((section, i) => {
-              return <IngredientSection key={i} name={section.name} ingredients={section.ingredients} />;
-            })}
+        <div className="container p-0 my-5">
+          <div className="row m-0 g-5">
+            <div className="col-lg-4 m-0 p-0">
+              <div className="ingredients bg-light-site p-3">
+                <h1>Ingredients</h1>
+                {recipe.ingredientSections.map((section, i) => {
+                  return <IngredientSection key={i} name={section.name} ingredients={section.ingredients} />;
+                })}
+              </div>
+            </div>
+
+            <div className="col m-0 instructions">
+              <h1 className="py-3 m-0">Instructions</h1>
+              {recipe.instructionSections.map((section, i) => {
+                return <InstructionsSection key={i} name={section.name} instructions={section.instructions} />;
+              })}
+            </div>
           </div>
         </div>
 
-        <div className="instructions">
-          <h1>Instructions</h1>
-          {recipe.instructionSections.map((section, i) => {
-            return <InstructionsSection key={i} name={section.name} instructions={section.instructions} />;
-          })}
-        </div>
+        {recipe.tips && (
+          <div className="p-3 bg-light-site tips">
+            <h1 className="mb-3">
+              Tips <FontAwesomeIcon icon={faLightbulb} className="text-muted" />
+            </h1>
+            <Markdown>{recipe.tips}</Markdown>
+          </div>
+        )}
       </div>
-
-      {recipe.tips && (
-        <div className="tips">
-          <h1>
-            Tips <FontAwesomeIcon icon={faLightbulb} />
-          </h1>
-          <Markdown>{recipe.tips}</Markdown>
-        </div>
-      )}
     </Layout>
   );
 };

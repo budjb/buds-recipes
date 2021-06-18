@@ -1,76 +1,33 @@
-@import 'layout';
+@import '../../node_modules/bootstrap/scss/functions';
+@import '../../node_modules/bootstrap/scss/variables';
+@import '../../node_modules/bootstrap/scss/mixins';
+@import 'colors';
 
 main.recipe {
-  title {
-    display: block;
-    font-size: 3rem;
-    margin: 2rem 0;
-    line-height: 3rem;
-  }
-
-  .content-parent {
-    display: block;
-
-    @include breakpoint(large) {
-      display: flex;
-      flex-direction: row;
-      margin-bottom: 3rem;
-    }
-  }
-
-  .ingredients-wrapper {
-    @include breakpoint(large) {
-      flex: 0 0 300px;
-      margin-right: 2rem;
-    }
-
-    .ingredients {
-      padding: 1rem;
-      background: #eee;
-
-      h1 {
-        margin-top: 0;
-      }
-
-      ul {
-        @include breakpoint(medium) {
-          columns: 2;
-        }
-        @include breakpoint(large) {
-          columns: 1;
-        }
-
-        li {
-          padding: 0.5rem 0;
-        }
+  .ingredients {
+    ul {
+      @include media-breakpoint-between(sm, lg) {
+        columns: 2;
       }
     }
   }
 
   .instructions {
-    @include breakpoint(large) {
-      flex: 0 1 auto;
-
-      h1:first-child {
-        margin-top: 1rem;
-      }
-    }
-
     ol {
       list-style: none;
       counter-reset: item;
 
-      padding: 0 3rem;
+      padding: 0 0 0 3rem;
 
       li {
         counter-increment: item;
-        padding: 1rem 0;
+        padding: 0.5rem 0;
         position: relative;
 
-        margin-top: 1rem;
+        margin-top: 0.5rem;
 
-        p:first-child {
-          margin-top: 0;
+        p {
+          margin: 0;
         }
       }
 
@@ -78,7 +35,7 @@ main.recipe {
         position: absolute;
         left: -3rem;
         top: 0;
-        transform: translateY(25%);
+        transform: translateY(10%);
         content: counter(item);
         background: #666;
         border-radius: 100%;
@@ -92,45 +49,9 @@ main.recipe {
     }
   }
 
-  .stats-bar {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-
-    @include breakpoint(medium) {
-      flex-direction: row;
-    }
-
-    margin: 2rem 0;
-
-    .stats-item {
-      margin: 0.5rem 1rem;
-
-      @include breakpoint(medium) {
-        margin: 0;
-      }
-
-      svg {
-        color: #999;
-        margin-right: 0.5rem;
-      }
-    }
-  }
-
   .tips {
-    padding: 1rem;
-    background: #eee;
-
-    h1 {
-      margin-top: 0;
-
-      svg {
-        color: #999;
-      }
-    }
-
     li {
-      margin-top: 2rem;
+      margin: 1rem 0;
     }
   }
 }
