@@ -24,7 +24,7 @@ $max-width: 1248px;
   }
 }
 
-body {
+html, body {
   overflow-x: hidden;
 }
 
@@ -37,7 +37,7 @@ header {
   }
 
   .offcanvas-collapse {
-    position: absolute;
+    position: fixed;
     top: 0;
     height: 100vh;
     left: 100%;

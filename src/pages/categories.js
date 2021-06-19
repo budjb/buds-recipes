@@ -11,6 +11,7 @@ const Categories = ({ data }) => {
       <Helmet>
         <title>Things We Make - Categories</title>
       </Helmet>
+      
       <ul>
         {_.sortBy(data.categories.group, o => o.slug).map(({ fieldValue: slug, totalCount: total }) => {
           return (

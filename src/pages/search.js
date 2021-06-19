@@ -5,9 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Layout from '../templates/layout';
 import { faFrown } from '@fortawesome/free-regular-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import RecipeCardSection from '../components/recipe-card-section';
+import { RecipeCard } from '../components/recipe-card';
 
-import '../scss/search.scss';
 import { Helmet } from 'react-helmet';
 
 const parseSearch = query => {
@@ -36,17 +35,22 @@ const NoResults = ({ query }) => {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-9 col-lg-6">
-            <h1>
+            <h1 className="display-4 mb-3">
               Nothing Found <FontAwesomeIcon icon={faFrown} />
             </h1>
-            We couldn't find any recipes that contained the term <strong>{query}</strong>.<br />
-            Feel free to try again with a different search!
+
+            <p>
+              We couldn't find any recipes that contained the term <strong>{query}</strong>. Feel free to try again with
+              a different search!
+            </p>
+
             <form ref={formRef} onSubmit={handleSearch}>
               <div className="input-group border border-1 rounded-pill border-secondary overflow-hidden">
                 <input
                   className="form-control border-0  shadow-none"
                   type="text"
                   ref={searchInput}
+                  defaultValue={query}
                   placeholder="Search..."
                 />
                 <button className="btn input-group-text">
@@ -77,6 +81,7 @@ const SearchPage = ({ data, location }) => {
     setLoading(false);
   }, [location.search]);
 
+  console.log(results);
   if (isLoading) {
     return <>TODO: Loading</>;
   } else if (!results.length) {
@@ -87,19 +92,22 @@ const SearchPage = ({ data, location }) => {
         <Helmet>
           <title>Things We Make - Search Results</title>
         </Helmet>
-        <h1>Results for: {query}</h1>
-        <RecipeCardSection>
-          {results.map(recipe => {
-            return (
-              <RecipeCardSection.RecipeCard
+
+        <h1 className="display-5 mb-5">Results for: {query}</h1>
+
+        <div className="container p-0">
+          <div className="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 position-relative">
+            {results.map(recipe => (
+              <RecipeCard
+                key={recipe.id}
                 name={recipe.name}
                 path={recipe.path}
                 preview={recipe.preview}
                 photo={recipe.coverImage}
               />
-            );
-          })}
-        </RecipeCardSection>
+            ))}
+          </div>
+        </div>
       </Layout>
     );
   }
