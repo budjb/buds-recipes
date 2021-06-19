@@ -2,11 +2,17 @@
 @import '../../node_modules/bootstrap/scss/variables';
 @import '../../node_modules/bootstrap/scss/mixins';
 
-a.recipe-card {
+.recipe-card {
   color: $gray-700;
   text-decoration: none;
 
+  transition: all 0.25s ease;
+
   &:hover {
     color: $dark;
+
+    @include media-breakpoint-up(lg) {
+      transform: scale(1.03);
+    }
   }
 }
