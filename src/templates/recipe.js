@@ -124,9 +124,11 @@ const Recipe = ({ data }) => {
 
             <div className="col m-0 instructions">
               <h1 className="py-3 m-0">Instructions</h1>
-              {recipe.instructionSections.map((section, i) => {
-                return <InstructionsSection key={i} name={section.name} instructions={section.instructions} />;
-              })}
+              {recipe.instructionSections.map((section, i) => (
+                <div className="instruction-set">
+                  <InstructionsSection key={i} name={section.name} instructions={section.instructions} />
+                </div>
+              ))}
             </div>
           </div>
         </div>

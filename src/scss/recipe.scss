@@ -13,6 +13,9 @@ main.recipe {
   }
 
   .instructions {
+    .instruction-set+.instruction-set {
+      margin-top: 2rem;
+    }
     ol {
       list-style: none;
       counter-reset: item;
