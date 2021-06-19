@@ -33,17 +33,30 @@ const NoResults = ({ query }) => {
       <Helmet>
         <title>Things We Make - Search Results</title>
       </Helmet>
-      <h1>
-        Nothing Found <FontAwesomeIcon icon={faFrown} />
-      </h1>
-      We couldn't find any recipes that contained the term <strong>{query}</strong>.<br />
-      Feel free to try again with a different search!
-      <form ref={formRef} onSubmit={handleSearch}>
-        <div className="new-search">
-          <input type="text" ref={searchInput} placeholder="Search..." />
-          <FontAwesomeIcon icon={faSearch} fixedWidth onClick={() => formRef.current.requestSubmit()} />
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-md-9 col-lg-6">
+            <h1>
+              Nothing Found <FontAwesomeIcon icon={faFrown} />
+            </h1>
+            We couldn't find any recipes that contained the term <strong>{query}</strong>.<br />
+            Feel free to try again with a different search!
+            <form ref={formRef} onSubmit={handleSearch}>
+              <div className="input-group border border-1 rounded-pill border-secondary overflow-hidden">
+                <input
+                  className="form-control border-0  shadow-none"
+                  type="text"
+                  ref={searchInput}
+                  placeholder="Search..."
+                />
+                <button className="btn input-group-text">
+                  <FontAwesomeIcon icon={faSearch} fixedWidth onClick={() => formRef.current.requestSubmit()} />
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
+      </div>
     </Layout>
   );
 };

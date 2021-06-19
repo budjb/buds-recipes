@@ -76,9 +76,8 @@ const Layout = ({ children, className, query = '' }) => {
   }
 
   return (
-    <div className="container">
-      <Helmet bodyAttributes={{ class: 'bg-body' }} />
-      <header className="fixed-top bg-light p-2">
+    <>
+      <header className="p-2 mb-5 container-fluid">
         <div className="d-flex justify-content-between align-content-center">
           <Link to="/" className="title d-block fs-1">
             Things We Make
@@ -132,15 +131,19 @@ const Layout = ({ children, className, query = '' }) => {
         </div>
       </header>
 
-      <main {...props}>{children}</main>
+      <div className="container">
+        <Helmet bodyAttributes={{ class: 'bg-body' }} />
 
-      <footer className="py-5 fs-6 text-muted text-center">
-        Copyright &copy; {buildCopyrightYears()}{' '}
-        <a href="https://budjb.dev" target="_blank" rel="noreferrer">
-          Bud Byrd
-        </a>
-      </footer>
-    </div>
+        <main {...props}>{children}</main>
+
+        <footer className="py-5 fs-6 text-muted text-center">
+          Copyright &copy; {buildCopyrightYears()}{' '}
+          <a href="https://budjb.dev" target="_blank" rel="noreferrer">
+            Bud Byrd
+          </a>
+        </footer>
+      </div>
+    </>
   );
 };
 
