@@ -1,35 +1,35 @@
 import React from 'react';
-import {graphql} from 'gatsby';
+import { graphql } from 'gatsby';
 import Layout from '../templates/layout';
-import {formatCategorySlug} from '../util';
-import {Helmet} from 'react-helmet';
-import {RecipeCard} from '../components/recipe-card';
+import { formatCategorySlug } from '../util';
+import { Helmet } from 'react-helmet';
+import { RecipeCard } from '../components/recipe-card';
 
-const CategoryPage = ({data, pageContext}) => {
+const CategoryPage = ({ data, pageContext }) => {
   return (
-      <Layout className="category">
-        <Helmet>
-          <title>Things We Make - {formatCategorySlug(pageContext.slug)}</title>
-        </Helmet>
+    <Layout className="category">
+      <Helmet>
+        <title>Things We Make - {formatCategorySlug(pageContext.slug)}</title>
+      </Helmet>
 
-        <h1 className="display-5 mb-5">Category: {formatCategorySlug(pageContext.slug)}</h1>
+      <h1 className="display-5 mb-5">Category: {formatCategorySlug(pageContext.slug)}</h1>
 
-        <div className="container p-0">
-          <div className="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 position-relative">
-            {data.allRecipe.nodes.map(recipe => {
-              return (
-                  <RecipeCard
-                      key={recipe.id}
-                      path={recipe.path}
-                      name={recipe.name}
-                      photo={recipe.imageFiles[0].childImageSharp.gatsbyImageData}
-                      preview={recipe.preview}
-                  />
-              );
-            })}
-          </div>
+      <div className="container p-0">
+        <div className="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 position-relative">
+          {data.allRecipe.nodes.map(recipe => {
+            return (
+              <RecipeCard
+                key={recipe.id}
+                path={recipe.path}
+                name={recipe.name}
+                photo={recipe.imageFiles[0].childImageSharp.gatsbyImageData}
+                preview={recipe.preview}
+              />
+            );
+          })}
         </div>
-      </Layout>
+      </div>
+    </Layout>
   );
 };
 
