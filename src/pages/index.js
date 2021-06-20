@@ -2,18 +2,13 @@ import React from 'react';
 import Layout from '../templates/layout';
 import { graphql } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
-import { Helmet } from 'react-helmet';
 import { RecipeCard } from '../components/recipe-card';
 
 const IndexPage = ({ data }) => {
   const latest = data.latest.nodes;
 
   return (
-    <Layout className="index">
-      <Helmet>
-        <title>Things We Make - Home</title>
-      </Helmet>
-
+    <Layout className="index" title="Home">
       <div className="container shadow-lg border-b">
         <div className="row flex-lg-row-reverse align-items-center justify-content-center my-5 ps-lg-5">
           <div className="col-lg-6 rounded-3 overflow-hidden p-3">

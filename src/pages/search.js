@@ -28,7 +28,7 @@ const NoResults = ({ query }) => {
   };
 
   return (
-    <Layout query={query} className="search-no-results">
+    <Layout query={query} title="Search Results">
       <Helmet>
         <title>Things We Make - Search Results</title>
       </Helmet>
@@ -81,18 +81,13 @@ const SearchPage = ({ data, location }) => {
     setLoading(false);
   }, [location.search]);
 
-  console.log(results);
   if (isLoading) {
     return <>TODO: Loading</>;
   } else if (!results.length) {
     return <NoResults query={query} />;
   } else {
     return (
-      <Layout query={query} className="search-results">
-        <Helmet>
-          <title>Things We Make - Search Results</title>
-        </Helmet>
-
+      <Layout query={query} className="search-results" title="Search Results">
         <h1 className="display-5 mb-5">Results for: {query}</h1>
 
         <div className="container p-0">

@@ -8,7 +8,6 @@ import marked from 'marked';
 
 import 'react-image-gallery/styles/css/image-gallery.css';
 import '../scss/recipe.scss';
-import { Helmet } from 'react-helmet';
 
 const sanitizeHtml = require('sanitize-html');
 
@@ -79,11 +78,8 @@ const Recipe = ({ data }) => {
   });
 
   return (
-    <Layout className="recipe row justify-content-center">
+    <Layout className="recipe row justify-content-center" title={recipe.name}>
       <div className="col-12 col-lg-10">
-        <Helmet>
-          <title>Things We Make - {recipe.name}</title>
-        </Helmet>
         {imagesConfig.length && (
           <ImageGallery
             items={imagesConfig}

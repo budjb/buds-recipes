@@ -16,7 +16,7 @@ const buildCopyrightYears = () => {
   }
 };
 
-const Layout = ({ children, className, query = '' }) => {
+const Layout = ({ children, className, title, query = '' }) => {
   const searchInput = createRef();
   const [showOffCanvasNav, setShowOffCanvasNav] = useState(false);
   const offCanvasRef = createRef();
@@ -77,12 +77,15 @@ const Layout = ({ children, className, query = '' }) => {
 
   return (
     <>
+      <Helmet defaultTitle="Things We Make" title={title} titleTemplate="%s | Things We Make" />
       <header className="p-2 mb-5 container-fluid">
         <div className="d-flex justify-content-between align-content-center">
           <Link to="/" className="title d-block fs-1">
             Things We Make
           </Link>
-          <i className={`bi bi-list ${showOffCanvasNav ? 'fade' : 'visible'} fs-1 btn text-dark`} onClick={showNav} />
+          <button type="button" className="btn border-0 py-0 px-2 shadow-none" onClick={showNav}>
+            <i className={`bi bi-list btn text-dark p-0 fs-1`} />
+          </button>
         </div>
 
         <div className={`offcanvas-collapse ${(showOffCanvasNav && 'open') || ''}`} ref={offCanvasRef}>
@@ -118,7 +121,7 @@ const Layout = ({ children, className, query = '' }) => {
             render={data => (
               <nav className="nav flex-column mx-3 mt-4">
                 {data.categories.group.map(({ fieldValue: slug }) => (
-                  <Link to={`/categories/${slug}`} className="nav-link text-light">
+                  <Link key={slug} to={`/categories/${slug}`} className="nav-link text-light">
                     {formatCategorySlug(slug)}
                   </Link>
                 ))}

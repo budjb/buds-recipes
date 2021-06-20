@@ -6,13 +6,15 @@ import { Helmet } from 'react-helmet';
 import { RecipeCard } from '../components/recipe-card';
 
 const CategoryPage = ({ data, pageContext }) => {
+  const title = formatCategorySlug(pageContext.slug);
+
   return (
-    <Layout className="category">
+    <Layout className="category" title={title}>
       <Helmet>
-        <title>Things We Make - {formatCategorySlug(pageContext.slug)}</title>
+        <title>Things We Make - {}</title>
       </Helmet>
 
-      <h1 className="display-5 mb-5">Category: {formatCategorySlug(pageContext.slug)}</h1>
+      <h1 className="display-5 mb-5">Category: {title}</h1>
 
       <div className="container p-0">
         <div className="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 position-relative">
