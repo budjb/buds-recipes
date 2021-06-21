@@ -7,7 +7,7 @@ images:
 totalTime: 30 minutes
 categories:
   - desserts
-servings: 12
+servings: '12'
 cuisine: Dessert
 ingredientSections:
   - ingredients:

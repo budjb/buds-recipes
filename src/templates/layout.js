@@ -77,7 +77,10 @@ const Layout = ({ children, className, title, query = '' }) => {
 
   return (
     <>
-      <Helmet defaultTitle="Things We Make" title={title} titleTemplate="%s | Things We Make" />
+      <Helmet defaultTitle="Things We Make" titleTemplate="%s | Things We Make">
+        <title>{title}</title>
+        <meta name="robots" content="noindex,nofollow" />
+      </Helmet>
       <header className="p-2 mb-5 container-fluid">
         <div className="d-flex justify-content-between align-content-center">
           <Link to="/" className="title d-block fs-1">
@@ -89,10 +92,10 @@ const Layout = ({ children, className, title, query = '' }) => {
         </div>
 
         <div className={`offcanvas-collapse ${(showOffCanvasNav && 'open') || ''}`} ref={offCanvasRef}>
-          <div className="d-flex justify-content-end">
+          <div className="d-flex justify-content-end my-3">
             <button
               type="button"
-              className="btn-close btn-close-white pt-4 shadow-none"
+              className="btn-close btn-close-white shadow-none"
               aria-label="Close"
               onClick={hideNav}
             />
