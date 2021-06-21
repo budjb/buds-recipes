@@ -1,54 +1,43 @@
 import * as React from 'react';
-import { Link } from 'gatsby';
+import { graphql, Link } from 'gatsby';
+import Layout from '../templates/layout';
+import { GatsbyImage } from 'gatsby-plugin-image';
 
-// styles
-const pageStyles = {
-  color: '#232129',
-  padding: '96px',
-  fontFamily: '-apple-system, Roboto, sans-serif, serif',
-};
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-};
-
-const paragraphStyles = {
-  marginBottom: 48,
-};
-const codeStyles = {
-  color: '#8A6534',
-  padding: 4,
-  backgroundColor: '#FFF4DB',
-  fontSize: '1.25rem',
-  borderRadius: 4,
-};
-
-// markup
-const NotFoundPage = () => {
+const NotFoundPage = ({ data }) => {
   return (
-    <main style={pageStyles}>
-      <title>Not found</title>
-      <h1 style={headingStyles}>Page not found</h1>
-      <p style={paragraphStyles}>
-        Sorry{' '}
-        <span role="img" aria-label="Pensive emoji">
-          😔
-        </span>{' '}
-        we couldn’t find what you were looking for.
-        <br />
-        {process.env.NODE_ENV === 'development' ? (
-          <>
-            <br />
-            Try creating a page in <code style={codeStyles}>src/pages/</code>.
-            <br />
-          </>
-        ) : null}
-        <br />
-        <Link to="/">Go home</Link>.
-      </p>
-    </main>
+    <Layout title="Not Found">
+      <div className="container my-5">
+        <div className="row align-items-center justify-content-center my-5 pe-lg-5">
+          <div className="col-lg-6 p-3 d-flex justify-content-center">
+            <GatsbyImage alt="Not Found" image={data.allFile.nodes[0].childImageSharp.gatsbyImageData} />
+          </div>
+          <div className="col-lg-6 p-3 text-right">
+            <h1 className="display-1">404</h1>
+            <h2 className="display-5">UH OH! You're lost.</h2>
+            <p>
+              The page you're looking for doesn't exist! I'm not quite sure how you got here. Maybe something moved?
+              Either way, click the button below to get back to the home page.
+            </p>
+            <Link to="/" className="btn btn-primary px-4">
+              Home
+            </Link>
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 };
 
 export default NotFoundPage;
+
+export const pageQuery = graphql`
+  query NotFoundQuery {
+    allFile(filter: { relativePath: { eq: "confused.png" } }) {
+      nodes {
+        childImageSharp {
+          gatsbyImageData(layout: CONSTRAINED, height: 300)
+        }
+      }
+    }
+  }
+`;

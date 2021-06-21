@@ -1,13 +1,13 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import ImageGallery from 'react-image-gallery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartPie, faClock, faLightbulb, faTag, faUser } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../templates/layout';
 import marked from 'marked';
+import { ImageGallery } from '../components/image-gallery';
 
-import 'react-image-gallery/styles/css/image-gallery.css';
 import '../scss/recipe.scss';
+import { GatsbyImage } from 'gatsby-plugin-image';
 
 const sanitizeHtml = require('sanitize-html');
 
@@ -68,30 +68,15 @@ const InstructionsSection = ({ instructions, name }) => {
  * @returns {JSX.Element}
  * @constructor
  */
-const Recipe = ({ data }) => {
-  const recipe = data.recipe;
-
-  const imagesConfig = recipe.imageFiles.map(img => {
-    return {
-      original: img.fullSize.gatsbyImageData.images.fallback.src,
-    };
-  });
-
+const Recipe = ({ data: { recipe } }) => {
   return (
     <Layout className="recipe row justify-content-center" title={recipe.name}>
       <div className="col-12 col-lg-10">
-        {imagesConfig.length && (
-          <ImageGallery
-            items={imagesConfig}
-            showBullets={true}
-            showIndex={false}
-            showThumbnails={false}
-            lazyLoad={true}
-            showPlayButton={false}
-            showFullscreenButton={false}
-          />
-        )}
-
+        <ImageGallery>
+          {recipe.imageFiles.map(({ fullSize: { gatsbyImageData: image } }, i) => (
+            <GatsbyImage key={i} alt={recipe.name} image={image} />
+          ))}
+        </ImageGallery>
         <StatsBar>
           <StatsItem icon={faUser}>{recipe.author}</StatsItem>
           <StatsItem icon={faClock}>{recipe.totalTime}</StatsItem>
