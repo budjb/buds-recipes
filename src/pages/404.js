@@ -5,9 +5,9 @@ import { GatsbyImage } from 'gatsby-plugin-image';
 
 const NotFoundPage = ({ data }) => {
   return (
-    <Layout title="Not Found">
-      <div className="container my-5">
-        <div className="row align-items-center justify-content-center my-5 pe-lg-5">
+    <Layout title="Not Found" className="flex-fill d-flex flex-column">
+      <div className="container my-auto">
+        <div className="row align-items-center justify-content-center my-5">
           <div className="col-lg-6 p-3 d-flex justify-content-center">
             <GatsbyImage alt="Not Found" image={data.allFile.nodes[0].childImageSharp.gatsbyImageData} />
           </div>

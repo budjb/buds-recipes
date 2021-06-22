@@ -69,19 +69,20 @@ const Layout = ({ children, className, title, query = '' }) => {
     }
   };
 
-  const props = {};
+  const contentProps = ['container'];
 
   if (className) {
-    props.className = className;
+    contentProps.push(className);
   }
 
   return (
-    <>
-      <Helmet defaultTitle="Things We Make" titleTemplate="%s | Things We Make">
+    <div className="min-vh-100 d-flex flex-column">
+      <Helmet defaultTitle="Things We Make" titleTemplate="%s | Things We Make" bodyAttributes={{ class: 'bg-body' }}>
         <title>{title}</title>
         <meta name="robots" content="noindex,nofollow" />
       </Helmet>
-      <header className="p-2 mb-5 container-fluid">
+
+      <header className="py-2 mb-3 mb-lg-5 container-fluid">
         <div className="d-flex justify-content-between align-content-center">
           <Link to="/" className="title d-block fs-1">
             Things We Make
@@ -137,19 +138,15 @@ const Layout = ({ children, className, title, query = '' }) => {
         </div>
       </header>
 
-      <div className="container">
-        <Helmet bodyAttributes={{ class: 'bg-body' }} />
+      <main className={contentProps.join(' ')}>{children}</main>
 
-        <main {...props}>{children}</main>
-
-        <footer className="py-5 fs-6 text-muted text-center">
-          Copyright &copy; {buildCopyrightYears()}{' '}
-          <a href="https://budjb.dev" target="_blank" rel="noreferrer">
-            Bud Byrd
-          </a>
-        </footer>
-      </div>
-    </>
+      <footer className="container py-5 fs-6 mt-auto text-muted text-center">
+        Copyright &copy; {buildCopyrightYears()}{' '}
+        <a href="https://budjb.dev" target="_blank" rel="noreferrer">
+          Bud Byrd
+        </a>
+      </footer>
+    </div>
   );
 };
 

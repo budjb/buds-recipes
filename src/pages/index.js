@@ -10,7 +10,7 @@ const IndexPage = ({ data }) => {
   return (
     <Layout className="index" title="Home">
       <div className="container shadow-lg border-b">
-        <div className="row flex-lg-row-reverse align-items-center justify-content-center my-5 ps-lg-5">
+        <div className="row flex-lg-row-reverse align-items-center justify-content-center mb-4 mb-lg-5 ps-lg-5">
           <div className="col-lg-6 rounded-3 overflow-hidden p-3">
             <GatsbyImage alt="Things We Make" image={data.cover.nodes[0].childImageSharp.gatsbyImageData} />
           </div>
@@ -47,7 +47,7 @@ export const pageQuery = graphql`
     cover: allFile(filter: { sourceInstanceName: { eq: "images" }, relativePath: { eq: "cover.jpg" } }) {
       nodes {
         childImageSharp {
-          gatsbyImageData(layout: CONSTRAINED, width: 800)
+          gatsbyImageData(layout: CONSTRAINED, sizes: "400,675")
         }
       }
     }
@@ -59,7 +59,7 @@ export const pageQuery = graphql`
         preview
         imageFiles {
           childImageSharp {
-            gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, width: 1280, aspectRatio: 1.25)
+            gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, sizes: "275,700", aspectRatio: 1.25)
           }
         }
       }

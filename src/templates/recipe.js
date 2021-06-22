@@ -70,7 +70,7 @@ const InstructionsSection = ({ instructions, name }) => {
  */
 const Recipe = ({ data: { recipe } }) => {
   return (
-    <Layout className="recipe row justify-content-center" title={recipe.name}>
+    <Layout className="recipe d-flex justify-content-center" title={recipe.name}>
       <div className="col-12 col-lg-10">
         <ImageGallery>
           {recipe.imageFiles.map(({ fullSize: { gatsbyImageData: image } }, i) => (
