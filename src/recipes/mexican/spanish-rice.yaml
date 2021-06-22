@@ -1,7 +1,4 @@
 name: Spanish Rice
-description: |+
-  This is just a _**nice and simple**_ recipe to make a great traditional side dish for
-  Tex-Mex meals!
 published: 2021-06-12T15:39:00-0500
 author: Bud Byrd
 preview: An easy to make recipe for a traditional and quintessential mexican side dish.
@@ -22,11 +19,11 @@ ingredientSections:
       - 1 cup long-grain rice
       - 12 fl oz chicken broth
       - 4 fl oz water
-      - 1 chicken/tomato buillon cube
+      - 1 chicken/tomato bouillon cube
       - 1 tsp garlic powder
       - 1 tsp onion powder
       - 2 tbsp cooking oil
-      - 1/4 cup vegetables or peppers (optional)
+      - ¼ cup vegetables or peppers (optional)
 instructionSections:
   - instructions:
       - Mix the chicken broth, water, onion powder, garlic powder, and crushed buillon
