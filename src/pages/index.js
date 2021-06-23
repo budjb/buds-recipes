@@ -51,7 +51,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    latest: allRecipe(limit: 5, sort: { fields: published, order: DESC }) {
+    latest: allRecipe(limit: 4, sort: { fields: published, order: DESC }) {
       nodes {
         id
         path

@@ -9,6 +9,11 @@ body {
   overflow-x: hidden;
 }
 
+img.fit {
+  max-width: 100%;
+  height: auto;
+}
+
 header {
   a.title {
     color: $dark;

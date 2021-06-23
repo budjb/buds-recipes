@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { graphql, Link } from 'gatsby';
+import { Link } from 'gatsby';
 import Layout from '../templates/layout';
-import { GatsbyImage } from 'gatsby-plugin-image';
+import notFoundImage from '../images/confused.png';
 
-const NotFoundPage = ({ data }) => {
+const NotFoundPage = () => {
   return (
     <Layout title="Not Found" className="flex-fill d-flex flex-column">
       <div className="container my-auto">
         <div className="row align-items-center justify-content-center my-5">
           <div className="col-lg-6 p-3 d-flex justify-content-center">
-            <GatsbyImage alt="Not Found" image={data.allFile.nodes[0].childImageSharp.gatsbyImageData} />
+            <img alt="Not Found" src={notFoundImage} className="fit" />
           </div>
           <div className="col-lg-6 p-3 text-right">
             <h1 className="display-1">404</h1>
@@ -29,15 +29,3 @@ const NotFoundPage = ({ data }) => {
 };
 
 export default NotFoundPage;
-
-export const pageQuery = graphql`
-  query NotFoundQuery {
-    allFile(filter: { relativePath: { eq: "confused.png" } }) {
-      nodes {
-        childImageSharp {
-          gatsbyImageData(layout: CONSTRAINED, height: 300)
-        }
-      }
-    }
-  }
-`;
