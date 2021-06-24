@@ -1,7 +1,8 @@
-const fs = require('fs');
 const path = require(`path`);
 const yaml = require('js-yaml');
-const { createRemoteFileNode, createFilePath } = require('gatsby-source-filesystem');
+const { createRemoteFileNode } = require('gatsby-source-filesystem');
+const { parseImagesToConfig, retryWithTimeout } = require('./src/gatsby-util');
+
 const _ = require('lodash');
 
 exports.createPages = async ({ graphql, actions }) => {
@@ -83,7 +84,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       servings: String!
       name: String!
       keywords: [String!]
-      categories: [String!]
+      categories: [String!]!
       published: Date!
       author: String!
       preview: String!
@@ -99,7 +100,8 @@ exports.createSchemaCustomization = ({ actions }) => {
 
 exports.onCreateNode = async ({
   node,
-  actions: { createNode },
+  loadNodeContent,
+  actions: { createNode, createParentChildLink },
   createNodeId,
   createContentDigest,
   store,
@@ -111,28 +113,28 @@ exports.onCreateNode = async ({
       return;
     }
 
-    const source = fs.readFileSync(node.absolutePath, 'utf-8');
+    const source = await loadNodeContent(node);
     const data = yaml.load(source);
 
-    data.slug = node.name;
-    data.path = `recipes/${data.slug}`;
-
-    if (data.categories) {
-      data.categories = data.categories.map(it => _.kebabCase(it));
-    }
-
-    const nodeMeta = {
+    const recipeNode = {
       id: createNodeId(`recipe-${node.name}`),
-      parent: null,
+      parent: node.id,
       children: [],
+      ...data,
       internal: {
         type: `Recipe`,
         content: source,
         contentDigest: createContentDigest(data),
       },
+      categories: data.categories.map(it => _.kebabCase(it)),
+      slug: node.name,
+      path: `recipes/${node.name}`,
     };
 
-    await createNode({ ...data, ...nodeMeta });
+    createNode(recipeNode);
+    createParentChildLink({ parent: node, child: recipeNode });
+
+    return recipeNode;
   } else if (node.internal.type === 'Recipe') {
     if (node.images.length) {
       node.imageFiles___NODE = await loadImageIds(
@@ -149,93 +151,76 @@ exports.onCreateNode = async ({
 };
 
 const loadImageIds = async (nodeId, images, getNodesByType, createNode, createNodeId, cache, store) => {
+  const loadWebImageId = async config => {
+    const childNode = await createRemoteFileNode({
+      url: config.url,
+      parentNodeId: nodeId,
+      createNode,
+      createNodeId,
+      cache,
+      store,
+    });
+
+    if (childNode) {
+      return childNode.id;
+    } else {
+      throw Error(`could not load image at URL ${config.url}`);
+    }
+  };
+
+  const loadFileImageId = config => {
+    const fileNodes = getNodesByType('File');
+
+    const match = fileNodes.find(it => {
+      if (config.sourceInstanceName && config.sourceInstanceName !== it.sourceInstanceName) {
+        return false;
+      }
+
+      return config.relativePath === it.relativePath;
+    });
+
+    if (match) {
+      match.id;
+    } else {
+      throw Error(
+        `could not find file node for source instance ${config.sourceInstanceName} and relative path ${config.relativePath}`
+      );
+    }
+  };
+
+  const loadGooglePhotoImageId = async config => {
+    const photoNodes = getNodesByType('GooglePhotosPhoto');
+
+    const match = photoNodes.find(it => {
+      return config.filename === it.filename;
+    });
+
+    if (match) {
+      const photoId = await retryWithTimeout(60000, 1000, done => {
+        if (match.photo___NODE) {
+          done(match.photo___NODE);
+        }
+      });
+
+      childNodeIds.push(photoId);
+    } else {
+      throw Error(`could not find Google photo for album ${config.album} and filename ${config.filename}`);
+    }
+  };
+
   const childNodeIds = [];
 
-  for (const image of parseImages(images)) {
-    if (image.type === 'remote') {
-      const childNode = await createRemoteFileNode({
-        url: image.url,
-        parentNodeId: nodeId,
-        createNode,
-        createNodeId,
-        cache,
-        store,
-      });
-
-      if (childNode) {
-        childNodeIds.push(childNode.id);
-      } else {
-        console.error(`could not load image at URL ${image.url}`);
-      }
+  for (const image of parseImagesToConfig(images)) {
+    if (image.type === 'web') {
+      childNodeIds.push(await loadWebImageId(image));
     } else if (image.type === 'file') {
-      const fileNodes = getNodesByType('File');
-
-      const match = fileNodes.find(it => {
-        if (image.sourceInstanceName && image.sourceInstanceName !== it.sourceInstanceName) {
-          return false;
-        }
-
-        return image.relativePath === it.relativePath;
-      });
-
-      if (match) {
-        childNodeIds.push(match.id);
-      } else {
-        console.error(
-          `could not find file node for source instance ${image.sourceInstanceName} and relative path ${image.relativePath}`
-        );
-      }
+      childNodeIds.push(loadFileImageId(image));
     } else if (image.type === 'gphotos') {
-      const photoNodes = getNodesByType('GooglePhotosPhoto');
-
-      const match = photoNodes.find(it => {
-        return image.filename === it.filename;
-      });
-
-      if (match) {
-        childNodeIds.push(match.photo___NODE);
-      } else {
-        console.error(`could not find Google photo for album ${image.album} and filename ${image.filename}`);
-      }
+      childNodeIds.push(await loadGooglePhotoImageId(image));
     }
   }
 
   return childNodeIds;
-};
-
-const parseImages = images => {
-  return images.map(image => {
-    let url;
-
-    try {
-      url = new URL(image);
-    } catch {
-      throw Error(`recipe ${node.name} contains unsupported URL ${url}`);
-    }
-
-    const protocol = _.trimEnd(url.protocol, ':');
-
-    if (protocol === 'file') {
-      return {
-        type: 'file',
-        sourceInstanceName: url.host || '__PROGRAMMATIC__',
-        relativePath: _.trimStart(url.pathname, '/'),
-      };
-    } else if (protocol === 'http' || protocol === 'https') {
-      return {
-        type: 'remote',
-        url: image,
-      };
-    } else if (protocol === 'gphotos') {
-      return {
-        type: 'gphotos',
-        album: url.hostname && url.hostname.replace(/\+/g, ' '),
-        filename: _.trimStart(url.pathname, '/'),
-      };
-    } else {
-      throw new Error(`unsupported image scheme type ${protocol}`);
-    }
-  });
 };
 
 // TODO: temporary workaround for https://github.com/gatsbyjs/gatsby/issues/31878
