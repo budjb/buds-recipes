@@ -2,6 +2,8 @@ import React, { createRef, useCallback, useEffect, useState } from 'react';
 import { graphql, Link, navigate, StaticQuery } from 'gatsby';
 import { formatCategorySlug } from '../util';
 
+import logoIcon from '../images/logo-large.png';
+
 import '../scss/layout.scss';
 import { Helmet } from 'react-helmet';
 
@@ -84,8 +86,8 @@ const Layout = ({ children, className, title, query = '' }) => {
 
       <header className="py-2 mb-3 mb-lg-5 container-fluid">
         <div className="d-flex justify-content-between align-content-center">
-          <Link to="/" className="title d-block fs-1">
-            Things We Make
+          <Link to="/" className="d-block">
+            <img src={logoIcon} alt="Things We Make" className="mh-100" style={{height: '65px'}}/>
           </Link>
           <button type="button" className="btn border-0 py-0 px-2 shadow-none" onClick={showNav}>
             <i className={`bi bi-list btn text-dark p-0 fs-1`} />

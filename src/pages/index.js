@@ -4,6 +4,8 @@ import { graphql } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import { RecipeCard } from '../components/recipe-card';
 
+import coverImage from '../images/logo-large.png';
+
 const IndexPage = ({ data }) => {
   const latest = data.latest.nodes;
 
@@ -11,11 +13,22 @@ const IndexPage = ({ data }) => {
     <Layout className="index" title="Home">
       <div className="container shadow-lg border-b">
         <div className="row flex-lg-row-reverse align-items-center justify-content-center mb-4 mb-lg-5 ps-lg-5">
-          <div className="col-lg-6 rounded-3 overflow-hidden p-3">
-            <GatsbyImage alt="Things We Make" image={data.cover.nodes[0].childImageSharp.gatsbyImageData} />
+          <div className="col-lg-6 border-0 overflow-hidden p-3 position-relative">
+            <GatsbyImage
+              className="rounded-3"
+              alt="Things We Make"
+              image={data.cover.nodes[0].childImageSharp.gatsbyImageData}
+            />
+            <div
+              className="position-absolute h-100 w-100 top-0 start-0 d-flex align-items-center justify-content-center"
+              style={{
+                background: 'rgba(255, 255, 255, 0.75)',
+              }}
+            >
+              <img src={coverImage} alt="Things We Make" className="h-75 w-75" />
+            </div>
           </div>
-          <div className="col-lg-6 p-3">
-            <h1 className="display-3 fw-bold lh-1 mb-3">Things We Make</h1>
+          <div className="col-lg-6 p-5">
             <p className="fs-2">
               Welcome to our collection of recipes for things we love to make in our home. From us to you, enjoy!
             </p>
@@ -47,7 +60,7 @@ export const pageQuery = graphql`
     cover: allFile(filter: { sourceInstanceName: { eq: "images" }, relativePath: { eq: "cover.jpg" } }) {
       nodes {
         childImageSharp {
-          gatsbyImageData(layout: CONSTRAINED, sizes: "400,675")
+          gatsbyImageData(layout: CONSTRAINED, sizes: "400,675", aspectRatio: 1)
         }
       }
     }

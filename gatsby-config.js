@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: "Bud's Recipes",
+    title: 'Things We Make',
   },
   plugins: [
     'gatsby-plugin-sass',
@@ -67,5 +67,18 @@ module.exports = {
       },
     },
     'gatsby-plugin-react-helmet',
+    {
+      resolve: 'gatsby-plugin-manifest',
+      options: {
+        name: `Things We Make`,
+        short_name: `Things We Make`,
+        start_url: `/`,
+        background_color: `#ffffff`,
+        theme_color: '#ffffff',
+        display: `standalone`,
+        icon: `src/images/logo-large.png`,
+      },
+    },
+    'gatsby-plugin-offline',
   ],
 };
