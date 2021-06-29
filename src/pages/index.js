@@ -25,7 +25,7 @@ const IndexPage = ({ data }) => {
                 background: 'rgba(255, 255, 255, 0.75)',
               }}
             >
-              <img src={coverImage} alt="Things We Make" className="h-75 w-75" />
+              <img src={coverImage} alt="Things We Make" className="h-75" style={{objectFit: 'contain'}}/>
             </div>
           </div>
           <div className="col-lg-6 p-5">
@@ -60,7 +60,7 @@ export const pageQuery = graphql`
     cover: allFile(filter: { sourceInstanceName: { eq: "images" }, relativePath: { eq: "cover.jpg" } }) {
       nodes {
         childImageSharp {
-          gatsbyImageData(layout: CONSTRAINED, sizes: "400,675", aspectRatio: 1)
+          gatsbyImageData(layout: CONSTRAINED, sizes: "400,675", aspectRatio: 1.5)
         }
       }
     }

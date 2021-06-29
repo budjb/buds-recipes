@@ -1,13 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Condensed&family=Roboto:wght@300;400&family=Sacramento&display=swap');
 
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+
+$custom-colors: (
+        "light-site": #eee
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 @import '../../node_modules/bootstrap-icons/font/bootstrap-icons.css';
-@import 'colors';
-
-html,
-body {
-  overflow-x: hidden;
-}
 
 img.fit {
   max-width: 100%;
@@ -15,6 +18,7 @@ img.fit {
 }
 
 header {
+  z-index: 999;
   a.title {
     color: $dark;
     text-decoration: none;
@@ -62,8 +66,4 @@ footer {
   a {
     color: #666;
   }
-}
-
-.bg-light-site {
-  background: $bg-light-site;
 }

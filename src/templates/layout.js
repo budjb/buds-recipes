@@ -1,11 +1,17 @@
 import React, { createRef, useCallback, useEffect, useState } from 'react';
 import { graphql, Link, navigate, StaticQuery } from 'gatsby';
 import { formatCategorySlug } from '../util';
-
+import _ from 'lodash';
 import logoIcon from '../images/logo-large.png';
 
 import '../scss/layout.scss';
 import { Helmet } from 'react-helmet';
+
+const topCategories = categories => {
+  return _.sortBy(categories, category => category.totalCount)
+    .reverse()
+    .splice(0, 5);
+};
 
 const buildCopyrightYears = () => {
   const startYear = 2021;
@@ -71,62 +77,67 @@ const Layout = ({ children, className, title, query = '' }) => {
     }
   };
 
-  const contentProps = ['container'];
+  const contentProps = ['container', 'my-3', 'my-lg-5'];
 
   if (className) {
     contentProps.push(className);
   }
 
   return (
-    <div className="min-vh-100 d-flex flex-column">
-      <Helmet defaultTitle="Things We Make" titleTemplate="%s | Things We Make" bodyAttributes={{ class: 'bg-body' }}>
-        <title>{title}</title>
-        <meta name="robots" content="noindex,nofollow" />
-      </Helmet>
+    <StaticQuery
+      query={graphql`
+        query CategoriesQuery {
+          categories: allRecipe {
+            group(field: categories) {
+              fieldValue
+              totalCount
+            }
+          }
+        }
+      `}
+      render={data => (
+        <div className="min-vh-100 d-flex flex-column">
+          <Helmet
+            defaultTitle="Things We Make"
+            titleTemplate="%s | Things We Make"
+            bodyAttributes={{ class: 'bg-body' }}
+          >
+            <title>{title}</title>
+            <meta name="robots" content="noindex,nofollow" />
+          </Helmet>
 
-      <header className="py-2 mb-3 mb-lg-5 container-fluid">
-        <div className="d-flex justify-content-between align-content-center">
-          <Link to="/" className="d-block">
-            <img src={logoIcon} alt="Things We Make" className="mh-100" style={{height: '65px'}}/>
-          </Link>
-          <button type="button" className="btn border-0 py-0 px-2 shadow-none" onClick={showNav}>
-            <i className={`bi bi-list btn text-dark p-0 fs-1`} />
-          </button>
-        </div>
+          <header className="py-2 container-fluid">
+            <div className="d-flex justify-content-between align-content-center">
+              <Link to="/" className="d-block">
+                <img src={logoIcon} alt="Things We Make" className="mh-100" style={{ height: '65px' }} />
+              </Link>
+              <button type="button" className="btn border-0 py-0 px-2 shadow-none" onClick={showNav}>
+                <i className={`bi bi-list btn text-dark p-0 fs-1`} />
+              </button>
+            </div>
 
-        <div className={`offcanvas-collapse ${(showOffCanvasNav && 'open') || ''}`} ref={offCanvasRef}>
-          <div className="d-flex justify-content-end my-3">
-            <button
-              type="button"
-              className="btn-close btn-close-white shadow-none"
-              aria-label="Close"
-              onClick={hideNav}
-            />
-          </div>
+            <div className={`offcanvas-collapse ${(showOffCanvasNav && 'open') || ''}`} ref={offCanvasRef}>
+              <div className="d-flex justify-content-end my-3">
+                <button
+                  type="button"
+                  className="btn-close btn-close-white shadow-none"
+                  aria-label="Close"
+                  onClick={hideNav}
+                />
+              </div>
 
-          <form className="d-flex order-lg-2" onSubmit={handleSearch}>
-            <input
-              className="form-control rounded-pill shadow-none"
-              type="search"
-              defaultValue={query}
-              ref={searchInput}
-              placeholder="Search..."
-            />
-          </form>
+              <form className="d-flex order-lg-2" onSubmit={handleSearch}>
+                <input
+                  className="form-control rounded-pill shadow-none"
+                  type="search"
+                  defaultValue={query}
+                  ref={searchInput}
+                  placeholder="Search..."
+                />
+              </form>
 
-          <StaticQuery
-            query={graphql`
-              query CategoriesQuery {
-                categories: allRecipe {
-                  group(field: categories) {
-                    fieldValue
-                  }
-                }
-              }
-            `}
-            render={data => (
               <nav className="nav flex-column mx-3 mt-4">
-                {data.categories.group.map(({ fieldValue: slug }) => (
+                {topCategories(data.categories.group).map(({ fieldValue: slug }) => (
                   <Link key={slug} to={`/categories/${slug}`} className="nav-link text-light">
                     {formatCategorySlug(slug)}
                   </Link>
@@ -135,20 +146,20 @@ const Layout = ({ children, className, title, query = '' }) => {
                   <small>More...</small>
                 </Link>
               </nav>
-            )}
-          />
+            </div>
+          </header>
+
+          <main className={contentProps.join(' ')}>{children}</main>
+
+          <footer className="container-fluid py-5 fs-6 mt-auto text-muted text-center">
+            Copyright &copy; {buildCopyrightYears()}{' '}
+            <a href="https://budjb.dev" target="_blank" rel="noreferrer">
+              Bud Byrd
+            </a>
+          </footer>
         </div>
-      </header>
-
-      <main className={contentProps.join(' ')}>{children}</main>
-
-      <footer className="container py-5 fs-6 mt-auto text-muted text-center">
-        Copyright &copy; {buildCopyrightYears()}{' '}
-        <a href="https://budjb.dev" target="_blank" rel="noreferrer">
-          Bud Byrd
-        </a>
-      </footer>
-    </div>
+      )}
+    />
   );
 };
 
