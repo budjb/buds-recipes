@@ -2,10 +2,10 @@ import React, { createRef, useCallback, useEffect, useState } from 'react';
 import { graphql, Link, navigate, StaticQuery } from 'gatsby';
 import { formatCategorySlug } from '../util';
 import _ from 'lodash';
-import logoIcon from '../images/logo-large.png';
 
 import '../scss/layout.scss';
 import { Helmet } from 'react-helmet';
+import {GatsbyImage} from "gatsby-plugin-image";
 
 const topCategories = categories => {
   return _.sortBy(categories, category => category.totalCount)
@@ -87,6 +87,11 @@ const Layout = ({ children, className, title, query = '' }) => {
     <StaticQuery
       query={graphql`
         query CategoriesQuery {
+          headerLogo: file(sourceInstanceName: {eq: "images"}, relativePath: {eq: "logo-black.png"}) {
+            childImageSharp {
+              gatsbyImageData(width: 65)
+            }
+          }
           categories: allRecipe {
             group(field: categories) {
               fieldValue
@@ -109,7 +114,7 @@ const Layout = ({ children, className, title, query = '' }) => {
           <header className="py-2 container-fluid">
             <div className="d-flex justify-content-between align-content-center">
               <Link to="/" className="d-block">
-                <img src={logoIcon} alt="Things We Make" className="mh-100" style={{ height: '65px' }} />
+                <GatsbyImage alt="Things We Make" image={data.headerLogo.childImageSharp.gatsbyImageData}/>
               </Link>
               <button type="button" className="btn border-0 py-0 px-2 shadow-none" onClick={showNav}>
                 <i className={`bi bi-list btn text-dark p-0 fs-1`} />

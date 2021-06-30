@@ -4,8 +4,6 @@ import { graphql } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import { RecipeCard } from '../components/recipe-card';
 
-import coverImage from '../images/logo-large.png';
-
 const IndexPage = ({ data }) => {
   const latest = data.latest.nodes;
 
@@ -17,7 +15,7 @@ const IndexPage = ({ data }) => {
             <GatsbyImage
               className="rounded-3"
               alt="Things We Make"
-              image={data.cover.nodes[0].childImageSharp.gatsbyImageData}
+              image={data.cover.childImageSharp.gatsbyImageData}
             />
             <div
               className="position-absolute h-100 w-100 top-0 start-0 d-flex align-items-center justify-content-center"
@@ -25,7 +23,12 @@ const IndexPage = ({ data }) => {
                 background: 'rgba(255, 255, 255, 0.75)',
               }}
             >
-              <img src={coverImage} alt="Things We Make" className="h-75" style={{objectFit: 'contain'}}/>
+              <GatsbyImage
+                alt="Things We Make"
+                image={data.logo.childImageSharp.gatsbyImageData}
+                objectFit='contain'
+                className="h-75"
+              />
             </div>
           </div>
           <div className="col-lg-6 p-5">
@@ -57,11 +60,14 @@ export default IndexPage;
 
 export const pageQuery = graphql`
   query LatestRecipes {
-    cover: allFile(filter: { sourceInstanceName: { eq: "images" }, relativePath: { eq: "cover.jpg" } }) {
-      nodes {
-        childImageSharp {
-          gatsbyImageData(layout: CONSTRAINED, sizes: "400,675", aspectRatio: 1.5)
-        }
+    logo: file(sourceInstanceName: { eq: "images" }, relativePath: { eq: "logo-black.png" }) {
+      childImageSharp {
+        gatsbyImageData(layout: CONSTRAINED, sizes: "400,675")
+      }
+    }
+    cover: file(sourceInstanceName: { eq: "images" }, relativePath: { eq: "cover.jpg" }) {
+      childImageSharp {
+        gatsbyImageData(layout: CONSTRAINED, sizes: "400,675", aspectRatio: 1.5)
       }
     }
     latest: allRecipe(limit: 4, sort: { fields: published, order: DESC }) {
@@ -72,7 +78,7 @@ export const pageQuery = graphql`
         preview
         imageFiles {
           childImageSharp {
-            gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, sizes: "275,700", aspectRatio: 1.25)
+            gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, sizes: "275,700", aspectRatio: 1.5)
           }
         }
       }
