@@ -62,7 +62,7 @@ export const pageQuery = graphql`
   query LatestRecipes {
     logo: file(sourceInstanceName: { eq: "images" }, relativePath: { eq: "logo-black.png" }) {
       childImageSharp {
-        gatsbyImageData(layout: CONSTRAINED, sizes: "400,675")
+        gatsbyImageData(layout: CONSTRAINED, sizes: "400,675", placeholder: NONE)
       }
     }
     cover: file(sourceInstanceName: { eq: "images" }, relativePath: { eq: "cover.jpg" }) {

@@ -89,7 +89,7 @@ const Layout = ({ children, className, title, query = '' }) => {
         query CategoriesQuery {
           headerLogo: file(sourceInstanceName: {eq: "images"}, relativePath: {eq: "logo-black.png"}) {
             childImageSharp {
-              gatsbyImageData(width: 65)
+              gatsbyImageData(width: 65, placeholder: NONE)
             }
           }
           categories: allRecipe {
