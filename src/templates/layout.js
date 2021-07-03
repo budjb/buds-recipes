@@ -12,6 +12,7 @@ const SideBar = ({ children, show, close, duration = '0.3s', threshold = 33 }) =
   const offCanvasRef = createRef();
 
   const swipeHandlers = useSwipeable({
+    delta: 0,
     onSwiped: eventData => {
       const element = offCanvasRef.current;
 
@@ -27,11 +28,11 @@ const SideBar = ({ children, show, close, duration = '0.3s', threshold = 33 }) =
       }
     },
     onSwiping: eventData => {
-      if (show && eventData.dir === 'Right') {
+      if (show) {
         const element = offCanvasRef.current;
 
         const width = element.clientWidth;
-        const deltaX = eventData.deltaX;
+        const deltaX = _.clamp(eventData.deltaX, 0, width);
         const deltaPercent = (deltaX / width) * 100;
         const percent = 100 - deltaPercent;
 
