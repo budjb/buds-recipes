@@ -26,7 +26,7 @@ const IndexPage = ({ data }) => {
               <GatsbyImage
                 alt="Things We Make"
                 image={data.logo.childImageSharp.gatsbyImageData}
-                objectFit='contain'
+                objectFit="contain"
                 className="h-75"
               />
             </div>

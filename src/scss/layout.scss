@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Condensed&family=Roboto:wght@300;400&family=Sacramento&display=swap');
 
-@import "../../node_modules/bootstrap/scss/functions";
-@import "../../node_modules/bootstrap/scss/variables";
+@import '../../node_modules/bootstrap/scss/functions';
+@import '../../node_modules/bootstrap/scss/variables';
 
 $custom-colors: (
-        "light-site": #eee
+  'light-site': #eee,
 );
 
 $theme-colors: map-merge($theme-colors, $custom-colors);
@@ -33,6 +33,7 @@ header {
     left: 100%;
     width: 100%;
     z-index: 500;
+    touch-action: pan-y;
 
     @include media-breakpoint-up(lg) {
       width: 100%;
@@ -44,12 +45,7 @@ header {
     overflow-y: auto;
     visibility: hidden;
     background: $gray-900;
-    transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
-
-    &.open {
-      visibility: visible;
-      transform: translateX(-100%);
-    }
+    transition-timing-function: ease-in-out;
   }
 }
 

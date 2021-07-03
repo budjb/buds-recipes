@@ -5,7 +5,94 @@ import _ from 'lodash';
 
 import '../scss/layout.scss';
 import { Helmet } from 'react-helmet';
-import {GatsbyImage} from "gatsby-plugin-image";
+import { GatsbyImage } from 'gatsby-plugin-image';
+import { useSwipeable } from 'react-swipeable';
+
+const SideBar = ({ children, show, close, duration = '0.3s', threshold = 33 }) => {
+  const offCanvasRef = createRef();
+
+  const swipeHandlers = useSwipeable({
+    onSwiped: eventData => {
+      const element = offCanvasRef.current;
+
+      const width = element.clientWidth;
+      const deltaX = eventData.deltaX;
+      const deltaPercent = (deltaX / width) * 100;
+
+      if (deltaPercent < threshold) {
+        element.style.transitionDuration = duration;
+        element.style.transform = `translateX(-100%)`;
+      } else {
+        close();
+      }
+    },
+    onSwiping: eventData => {
+      if (show && eventData.dir === 'Right') {
+        const element = offCanvasRef.current;
+
+        const width = element.clientWidth;
+        const deltaX = eventData.deltaX;
+        const deltaPercent = (deltaX / width) * 100;
+        const percent = 100 - deltaPercent;
+
+        element.style.transitionDuration = '0s';
+        element.style.transform = `translateX(-${percent}%)`;
+      }
+    },
+  });
+
+  const refWrapper = ref => {
+    swipeHandlers.ref(ref);
+    offCanvasRef.current = ref;
+  };
+
+  const handleMenuClick = useCallback(
+    event => {
+      if (show && offCanvasRef.current && !offCanvasRef.current.contains(event.target)) {
+        close();
+      }
+    },
+    [offCanvasRef, show, close]
+  );
+
+  const handleEscape = useCallback(
+    event => {
+      if (event.keyCode === 27 && show) {
+        event.preventDefault();
+        close();
+      }
+    },
+    [show, close]
+  );
+
+  useEffect(() => {
+    if (show) {
+      offCanvasRef.current.style.visibility = 'visible';
+      offCanvasRef.current.style.transform = 'translateX(-100%)';
+      offCanvasRef.current.style.transitionDuration = duration;
+    } else {
+      offCanvasRef.current.style.visibility = 'hidden';
+      offCanvasRef.current.style.transform = 'translateX(0)';
+      offCanvasRef.current.style.transitionDuration = duration;
+    }
+  }, [offCanvasRef, show, duration]);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleMenuClick);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('mousedown', handleMenuClick);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  });
+
+  return (
+    <div className="offcanvas-collapse" {...swipeHandlers} ref={refWrapper}>
+      {children}
+    </div>
+  );
+};
 
 const topCategories = categories => {
   return _.sortBy(categories, category => category.totalCount)
@@ -25,9 +112,8 @@ const buildCopyrightYears = () => {
 };
 
 const Layout = ({ children, className, title, query = '' }) => {
-  const searchInput = createRef();
   const [showOffCanvasNav, setShowOffCanvasNav] = useState(false);
-  const offCanvasRef = createRef();
+  const searchInput = createRef();
 
   const showNav = useCallback(() => {
     setShowOffCanvasNav(true);
@@ -36,35 +122,6 @@ const Layout = ({ children, className, title, query = '' }) => {
   const hideNav = useCallback(() => {
     setShowOffCanvasNav(false);
   }, [setShowOffCanvasNav]);
-
-  const handleMenuClick = useCallback(
-    event => {
-      if (offCanvasRef && !offCanvasRef.current.contains(event.target)) {
-        setShowOffCanvasNav(false);
-      }
-    },
-    [offCanvasRef, setShowOffCanvasNav]
-  );
-
-  const handleEscape = useCallback(
-    event => {
-      if (event.keyCode === 27 && showOffCanvasNav) {
-        event.preventDefault();
-        setShowOffCanvasNav(false);
-      }
-    },
-    [showOffCanvasNav, setShowOffCanvasNav]
-  );
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleMenuClick);
-    document.addEventListener('keydown', handleEscape);
-
-    return () => {
-      document.removeEventListener('mousedown', handleMenuClick);
-      document.removeEventListener('keydown', handleEscape);
-    };
-  });
 
   const handleSearch = event => {
     event.preventDefault();
@@ -87,7 +144,7 @@ const Layout = ({ children, className, title, query = '' }) => {
     <StaticQuery
       query={graphql`
         query CategoriesQuery {
-          headerLogo: file(sourceInstanceName: {eq: "images"}, relativePath: {eq: "logo-black.png"}) {
+          headerLogo: file(sourceInstanceName: { eq: "images" }, relativePath: { eq: "logo-black.png" }) {
             childImageSharp {
               gatsbyImageData(width: 65, placeholder: NONE)
             }
@@ -114,14 +171,14 @@ const Layout = ({ children, className, title, query = '' }) => {
           <header className="py-2 container-fluid">
             <div className="d-flex justify-content-between align-content-center">
               <Link to="/" className="d-block">
-                <GatsbyImage alt="Things We Make" image={data.headerLogo.childImageSharp.gatsbyImageData}/>
+                <GatsbyImage alt="Things We Make" image={data.headerLogo.childImageSharp.gatsbyImageData} />
               </Link>
               <button type="button" className="btn border-0 py-0 px-2 shadow-none" onClick={showNav}>
                 <i className={`bi bi-list btn text-dark p-0 fs-1`} />
               </button>
             </div>
 
-            <div className={`offcanvas-collapse ${(showOffCanvasNav && 'open') || ''}`} ref={offCanvasRef}>
+            <SideBar show={showOffCanvasNav} close={hideNav}>
               <div className="d-flex justify-content-end my-3">
                 <button
                   type="button"
@@ -151,7 +208,7 @@ const Layout = ({ children, className, title, query = '' }) => {
                   <small>More...</small>
                 </Link>
               </nav>
-            </div>
+            </SideBar>
           </header>
 
           <main className={contentProps.join(' ')}>{children}</main>
