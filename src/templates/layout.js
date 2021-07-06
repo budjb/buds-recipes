@@ -71,10 +71,12 @@ const SideBar = ({ children, show, close, duration = '0.3s', threshold = 33 }) =
       offCanvasRef.current.style.visibility = 'visible';
       offCanvasRef.current.style.transform = 'translateX(-100%)';
       offCanvasRef.current.style.transitionDuration = duration;
+      document.scrollingElement.classList.add('lock-scroll');
     } else {
       offCanvasRef.current.style.visibility = 'hidden';
       offCanvasRef.current.style.transform = 'translateX(0)';
       offCanvasRef.current.style.transitionDuration = duration;
+      document.scrollingElement.classList.remove('lock-scroll');
     }
   }, [offCanvasRef, show, duration]);
 
@@ -96,9 +98,7 @@ const SideBar = ({ children, show, close, duration = '0.3s', threshold = 33 }) =
 };
 
 const topCategories = categories => {
-  return _.sortBy(categories, category => category.totalCount)
-    .reverse()
-    .splice(0, 5);
+  return _.orderBy(categories, ['totalCount', 'fieldValue'], ['desc', 'asc']).splice(0, 5);
 };
 
 const buildCopyrightYears = () => {
@@ -169,7 +169,7 @@ const Layout = ({ children, className, title, query = '' }) => {
             <meta name="robots" content="noindex,nofollow" />
           </Helmet>
 
-          <header className="py-2 container-fluid">
+          <header className="py-2 container-fluid shadow bg-light position-sticky top-0">
             <div className="d-flex justify-content-between align-content-center">
               <Link to="/" className="d-block">
                 <GatsbyImage alt="Things We Make" image={data.headerLogo.childImageSharp.gatsbyImageData} />
@@ -214,7 +214,7 @@ const Layout = ({ children, className, title, query = '' }) => {
 
           <main className={contentProps.join(' ')}>{children}</main>
 
-          <footer className="container-fluid py-5 fs-6 mt-auto text-muted text-center">
+          <footer className="container-fluid py-5 fs-6 mt-auto text-center bg-dark text-light shadow-inverted">
             Copyright &copy; {buildCopyrightYears()}{' '}
             <a href="https://budjb.dev" target="_blank" rel="noreferrer">
               Bud Byrd

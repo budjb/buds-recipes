@@ -17,8 +17,15 @@ img.fit {
   height: auto;
 }
 
+@include media-breakpoint-down(lg) {
+  .lock-scroll {
+    overflow-y: hidden;
+  }
+}
+
 header {
   z-index: 999;
+
   a.title {
     color: $dark;
     text-decoration: none;
@@ -60,6 +67,14 @@ h6 {
 
 footer {
   a {
-    color: #666;
+    color: darken(white, 25%);
+
+    &:hover {
+      color: white;
+    }
   }
+}
+
+.shadow-inverted {
+  box-shadow: 0.5rem 0 1rem rgb(0 0 0 / 15%);
 }

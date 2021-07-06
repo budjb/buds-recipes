@@ -84,7 +84,8 @@ const Recipe = ({ data: { recipe } }) => {
           <StatsItem icon={faTag}>{recipe.cuisine}</StatsItem>
         </StatsBar>
 
-        <h1 className="my-3">{recipe.name}</h1>
+        <h1 className="my-3 display-4">{recipe.name}</h1>
+        <h3>{recipe.preview}</h3>
 
         {recipe.description && (
           <div className="my-5">
@@ -145,6 +146,7 @@ export const pageQuery = graphql`
         instructions
       }
       tips
+      preview
       name
       servings
       totalTime
