@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { graphql, Link, navigate, StaticQuery } from 'gatsby';
 import { formatCategorySlug } from '../util';
 import _ from 'lodash';
@@ -8,7 +8,12 @@ import { Helmet } from 'react-helmet';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import { useSwipeable } from 'react-swipeable';
 
-const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 33 }) => {
+const doTransition = (element, duration, percent) => {
+  element.style.transform = `translateX(-${percent}%)`;
+  element.style.transitionDuration = duration + 'ms';
+};
+
+const SideBar = forwardRef(({ children, duration = 300, threshold = 33 }, ref) => {
   /**
    * Track whether the initial swipe was either to the left or right,
    * and lock the axis (open/close sidebar vs vertical scroll) based on
@@ -17,11 +22,48 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
   const [isHorizontalSwipe, setIsHorizontalSwipe] = useState(false);
 
   /**
+   * Whether the sidebar is open or closed.
+   */
+  const [isOpen, setOpen] = useState(false);
+
+  /**
    * Reference to the sidebar element.
    *
    * @type {React.RefObject<Element>}
    */
   const offCanvasRef = useRef();
+
+  /**
+   * Opens the sidebar with the configured duration.
+   *
+   * @param d
+   */
+  const open = useCallback(
+    (d = duration) => {
+      doTransition(offCanvasRef.current, d, 100);
+      setOpen(true);
+    },
+    [offCanvasRef, setOpen, duration]
+  );
+
+  /**
+   * Closes the sidebar with the configured duration.
+   */
+  const close = useCallback(
+    (d = duration) => {
+      doTransition(offCanvasRef.current, d, 0);
+      setOpen(false);
+    },
+    [offCanvasRef, setOpen, duration]
+  );
+
+  /**
+   * Expose open and close methods to the provided ref.
+   */
+  useImperativeHandle(ref, () => ({
+    open: open,
+    close: close,
+  }));
 
   /**
    * Event handler for the very beginning of a swipe.
@@ -42,23 +84,25 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
 
     const element = offCanvasRef.current;
 
+    const velocity = Math.abs(eventData.vxvy[0]);
     const width = element.clientWidth;
-    const deltaX = _.clamp(show ? eventData.deltaX : eventData.deltaX * -1, 0, width);
+    const deltaX = _.clamp(isOpen ? eventData.deltaX : eventData.deltaX * -1, 0, width);
     const deltaPercent = (deltaX / width) * 100;
+    const animationTime = Math.min(duration, (width - deltaX) / velocity);
 
-    if (show) {
+    if (isOpen) {
       if (deltaPercent < threshold) {
-        element.style.transitionDuration = duration;
-        element.style.transform = `translateX(-100%)`;
+        doTransition(element, duration, 100);
       } else {
-        close();
+        doTransition(element, animationTime, 0);
+        setOpen(false);
       }
     } else {
       if (deltaPercent < threshold) {
-        element.style.transitionDuration = duration;
-        element.style.transform = `translateX(0)`;
+        doTransition(element, duration, 0);
       } else {
-        open();
+        doTransition(element, animationTime, 100);
+        setOpen(true);
       }
     }
 
@@ -78,12 +122,11 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
     const element = offCanvasRef.current;
 
     const width = element.clientWidth;
-    const deltaX = _.clamp(show ? eventData.deltaX : eventData.deltaX * -1, 0, width);
+    const deltaX = _.clamp(isOpen ? eventData.deltaX : eventData.deltaX * -1, 0, width);
     const deltaPercent = (deltaX / width) * 100;
-    const percent = show ? 100 - deltaPercent : deltaPercent;
+    const percent = isOpen ? 100 - deltaPercent : deltaPercent;
 
-    element.style.transitionDuration = '0s';
-    element.style.transform = `translateX(-${percent}%)`;
+    doTransition(element, 0, percent);
   };
 
   /**
@@ -121,26 +164,19 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
   }, [isHorizontalSwipe]);
 
   /**
-   * Handle CSS transition animations depending on open or close state,
-   * and lock the body when the sidebar is open on mobile clients.
+   * Lock the body when the sidebar is open on mobile clients.
    */
   useEffect(() => {
-    if (show) {
-      offCanvasRef.current.style.transform = 'translateX(-100%)';
-      offCanvasRef.current.style.transitionDuration = duration;
-
+    if (isOpen) {
       if (document.scrollingElement) {
         document.scrollingElement.classList.add('lock-scroll-lg');
       }
     } else {
-      offCanvasRef.current.style.transform = 'translateX(0)';
-      offCanvasRef.current.style.transitionDuration = duration;
-
       if (document.scrollingElement) {
         document.scrollingElement.classList.remove('lock-scroll-lg');
       }
     }
-  }, [offCanvasRef, show, duration]);
+  }, [offCanvasRef, isOpen, duration]);
 
   /**
    * Hand click events so that any click outside the sidebar when it is shown will close it.
@@ -149,11 +185,11 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
    */
   const handleMenuClick = useCallback(
     event => {
-      if (show && offCanvasRef.current && !offCanvasRef.current.contains(event.target)) {
+      if (isOpen && offCanvasRef.current && !offCanvasRef.current.contains(event.target)) {
         close();
       }
     },
-    [offCanvasRef, show, close]
+    [offCanvasRef, isOpen, close]
   );
 
   /**
@@ -163,12 +199,12 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
    */
   const handleEscape = useCallback(
     event => {
-      if (event.keyCode === 27 && show) {
+      if (event.keyCode === 27 && isOpen) {
         event.preventDefault();
         close();
       }
     },
-    [show, close]
+    [isOpen, close]
   );
 
   /**
@@ -189,7 +225,7 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
       {children}
     </div>
   );
-};
+});
 
 const topCategories = categories => {
   return _.orderBy(categories, ['totalCount', 'fieldValue'], ['desc', 'asc']).splice(0, 5);
@@ -207,16 +243,16 @@ const buildCopyrightYears = () => {
 };
 
 const Layout = ({ children, className, title, query = '' }) => {
-  const [showOffCanvasNav, setShowOffCanvasNav] = useState(false);
   const searchInput = useRef();
+  const sidebarRef = useRef();
 
   const showNav = useCallback(() => {
-    setShowOffCanvasNav(true);
-  }, [setShowOffCanvasNav]);
+    sidebarRef.current.open();
+  }, [sidebarRef]);
 
   const hideNav = useCallback(() => {
-    setShowOffCanvasNav(false);
-  }, [setShowOffCanvasNav]);
+    sidebarRef.current.close();
+  }, [sidebarRef]);
 
   const handleSearch = event => {
     event.preventDefault();
@@ -273,7 +309,7 @@ const Layout = ({ children, className, title, query = '' }) => {
               </button>
             </div>
 
-            <SideBar show={showOffCanvasNav} close={hideNav} open={showNav}>
+            <SideBar ref={sidebarRef}>
               <div className="d-flex justify-content-end my-3">
                 <button
                   type="button"
