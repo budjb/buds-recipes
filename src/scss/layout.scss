@@ -17,8 +17,12 @@ img.fit {
   height: auto;
 }
 
+.lock-scroll {
+  overflow-y: hidden;
+}
+
 @include media-breakpoint-down(lg) {
-  .lock-scroll {
+  .lock-scroll-lg {
     overflow-y: hidden;
   }
 }

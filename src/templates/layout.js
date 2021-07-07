@@ -32,13 +32,6 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
     }
   };
 
-  useEffect(() => {
-    if (isHorizontalSwipe) {
-      document.documentElement.style.overflowY = 'hidden';
-    } else {
-      document.documentElement.style.overflowY = 'visible';
-    }
-  }, [isHorizontalSwipe]);
   /**
    * Event handler for when a swipe has completed.
    */
@@ -113,6 +106,21 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
   }, [swipeHandlers]);
 
   /**
+   * Prevent vertical scrolling when a horizontal swipe is ongoing.
+   */
+  useEffect(() => {
+    if (isHorizontalSwipe) {
+      if (document.scrollingElement) {
+        document.scrollingElement.classList.add('lock-scroll');
+      }
+    } else {
+      if (document.scrollingElement) {
+        document.scrollingElement.classList.remove('lock-scroll');
+      }
+    }
+  }, [isHorizontalSwipe]);
+
+  /**
    * Handle CSS transition animations depending on open or close state,
    * and lock the body when the sidebar is open on mobile clients.
    */
@@ -122,14 +130,14 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
       offCanvasRef.current.style.transitionDuration = duration;
 
       if (document.scrollingElement) {
-        document.scrollingElement.classList.add('lock-scroll');
+        document.scrollingElement.classList.add('lock-scroll-lg');
       }
     } else {
       offCanvasRef.current.style.transform = 'translateX(0)';
       offCanvasRef.current.style.transitionDuration = duration;
 
       if (document.scrollingElement) {
-        document.scrollingElement.classList.remove('lock-scroll');
+        document.scrollingElement.classList.remove('lock-scroll-lg');
       }
     }
   }, [offCanvasRef, show, duration]);
