@@ -8,45 +8,105 @@ import { Helmet } from 'react-helmet';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import { useSwipeable } from 'react-swipeable';
 
-const SideBar = ({ children, show, close, duration = '0.3s', threshold = 33 }) => {
+const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 33 }) => {
+  /**
+   * Reference to the sidebar element.
+   *
+   * @type {React.RefObject<unknown>}
+   */
   const offCanvasRef = createRef();
 
-  const swipeHandlers = useSwipeable({
-    delta: 0,
-    onSwiped: eventData => {
-      const element = offCanvasRef.current;
+  /**
+   * Event handler for when a swipe has completed.
+   *
+   * @param eventData
+   */
+  const onSwiped = eventData => {
+    const element = offCanvasRef.current;
 
-      const width = element.clientWidth;
-      const deltaX = eventData.deltaX;
-      const deltaPercent = (deltaX / width) * 100;
+    const width = element.clientWidth;
+    const deltaX = _.clamp(show ? eventData.deltaX : eventData.deltaX * -1, 0, width);
+    const deltaPercent = (deltaX / width) * 100;
 
+    if (show) {
       if (deltaPercent < threshold) {
         element.style.transitionDuration = duration;
         element.style.transform = `translateX(-100%)`;
       } else {
         close();
       }
-    },
-    onSwiping: eventData => {
-      if (show) {
-        const element = offCanvasRef.current;
-
-        const width = element.clientWidth;
-        const deltaX = _.clamp(eventData.deltaX, 0, width);
-        const deltaPercent = (deltaX / width) * 100;
-        const percent = 100 - deltaPercent;
-
-        element.style.transitionDuration = '0s';
-        element.style.transform = `translateX(-${percent}%)`;
+    } else {
+      if (deltaPercent < threshold) {
+        element.style.transitionDuration = duration;
+        element.style.transform = `translateX(0)`;
+      } else {
+        open();
       }
-    },
-  });
-
-  const refWrapper = ref => {
-    swipeHandlers.ref(ref);
-    offCanvasRef.current = ref;
+    }
   };
 
+  /**
+   * Event handler for when a swipe is ongoing.
+   *
+   * @param eventData
+   */
+  const onSwiping = eventData => {
+    const element = offCanvasRef.current;
+
+    const width = element.clientWidth;
+    const deltaX = _.clamp(show ? eventData.deltaX : eventData.deltaX * -1, 0, width);
+    const deltaPercent = (deltaX / width) * 100;
+    const percent = show ? 100 - deltaPercent : deltaPercent;
+
+    element.style.transitionDuration = '0s';
+    element.style.transform = `translateX(-${percent}%)`;
+  };
+
+  /**
+   * Swipe configuration.
+   *
+   * @type {SwipeableHandlers}
+   */
+  const swipeHandlers = useSwipeable({
+    delta: 16,
+    onSwiped,
+    onSwiping,
+  });
+
+  /**
+   * Register the swipe event handlers with the document.
+   */
+  useEffect(() => {
+    swipeHandlers.ref(document.documentElement);
+  }, [swipeHandlers]);
+
+  /**
+   * Handle CSS transition animations depending on open or close state,
+   * and lock the body when the sidebar is open on mobile clients.
+   */
+  useEffect(() => {
+    if (show) {
+      offCanvasRef.current.style.transform = 'translateX(-100%)';
+      offCanvasRef.current.style.transitionDuration = duration;
+
+      if (document.scrollingElement) {
+        document.scrollingElement.classList.add('lock-scroll');
+      }
+    } else {
+      offCanvasRef.current.style.transform = 'translateX(0)';
+      offCanvasRef.current.style.transitionDuration = duration;
+
+      if (document.scrollingElement) {
+        document.scrollingElement.classList.remove('lock-scroll');
+      }
+    }
+  }, [offCanvasRef, show, duration]);
+
+  /**
+   * Hand click events so that any click outside the sidebar when it is shown will close it.
+   *
+   * @type {function(*): void}
+   */
   const handleMenuClick = useCallback(
     event => {
       if (show && offCanvasRef.current && !offCanvasRef.current.contains(event.target)) {
@@ -56,6 +116,11 @@ const SideBar = ({ children, show, close, duration = '0.3s', threshold = 33 }) =
     [offCanvasRef, show, close]
   );
 
+  /**
+   * Handle escape key to close menu when it is open.
+   *
+   * @type {function(*): void}
+   */
   const handleEscape = useCallback(
     event => {
       if (event.keyCode === 27 && show) {
@@ -66,20 +131,9 @@ const SideBar = ({ children, show, close, duration = '0.3s', threshold = 33 }) =
     [show, close]
   );
 
-  useEffect(() => {
-    if (show) {
-      offCanvasRef.current.style.visibility = 'visible';
-      offCanvasRef.current.style.transform = 'translateX(-100%)';
-      offCanvasRef.current.style.transitionDuration = duration;
-      document.scrollingElement.classList.add('lock-scroll');
-    } else {
-      offCanvasRef.current.style.visibility = 'hidden';
-      offCanvasRef.current.style.transform = 'translateX(0)';
-      offCanvasRef.current.style.transitionDuration = duration;
-      document.scrollingElement.classList.remove('lock-scroll');
-    }
-  }, [offCanvasRef, show, duration]);
-
+  /**
+   * Register click and keyboard handlers.
+   */
   useEffect(() => {
     document.addEventListener('mousedown', handleMenuClick);
     document.addEventListener('keydown', handleEscape);
@@ -91,7 +145,7 @@ const SideBar = ({ children, show, close, duration = '0.3s', threshold = 33 }) =
   });
 
   return (
-    <div className="offcanvas-collapse" {...swipeHandlers} ref={refWrapper}>
+    <div className="offcanvas-collapse" ref={offCanvasRef}>
       {children}
     </div>
   );
@@ -179,7 +233,7 @@ const Layout = ({ children, className, title, query = '' }) => {
               </button>
             </div>
 
-            <SideBar show={showOffCanvasNav} close={hideNav}>
+            <SideBar show={showOffCanvasNav} close={hideNav} open={showNav}>
               <div className="d-flex justify-content-end my-3">
                 <button
                   type="button"
