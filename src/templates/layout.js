@@ -1,4 +1,4 @@
-import React, { createRef, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { graphql, Link, navigate, StaticQuery } from 'gatsby';
 import { formatCategorySlug } from '../util';
 import _ from 'lodash';
@@ -10,18 +10,36 @@ import { useSwipeable } from 'react-swipeable';
 
 const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 33 }) => {
   /**
+   * Track whether the initial swipe was either to the left or right,
+   * and lock the axis (open/close sidebar vs vertical scroll) based on
+   * the original scroll direction for the duration of the swipe.
+   */
+  const [isHorizontalSwipe, setIsHorizontalSwipe] = useState(false);
+
+  /**
    * Reference to the sidebar element.
    *
-   * @type {React.RefObject<unknown>}
+   * @type {React.RefObject<Element>}
    */
-  const offCanvasRef = createRef();
+  const offCanvasRef = useRef();
+
+  /**
+   * Event handler for the very beginning of a swipe.
+   */
+  const onSwipeStart = eventData => {
+    if (['Left', 'Right'].includes(eventData.dir)) {
+      setIsHorizontalSwipe(true);
+    }
+  };
 
   /**
    * Event handler for when a swipe has completed.
-   *
-   * @param eventData
    */
   const onSwiped = eventData => {
+    if (!isHorizontalSwipe) {
+      return;
+    }
+
     const element = offCanvasRef.current;
 
     const width = element.clientWidth;
@@ -43,6 +61,8 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
         open();
       }
     }
+
+    setIsHorizontalSwipe(false);
   };
 
   /**
@@ -51,6 +71,10 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
    * @param eventData
    */
   const onSwiping = eventData => {
+    if (!isHorizontalSwipe) {
+      return;
+    }
+
     const element = offCanvasRef.current;
 
     const width = element.clientWidth;
@@ -71,6 +95,7 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
     delta: 16,
     onSwiped,
     onSwiping,
+    onSwipeStart,
   });
 
   /**
@@ -168,7 +193,7 @@ const buildCopyrightYears = () => {
 
 const Layout = ({ children, className, title, query = '' }) => {
   const [showOffCanvasNav, setShowOffCanvasNav] = useState(false);
-  const searchInput = createRef();
+  const searchInput = useRef();
 
   const showNav = useCallback(() => {
     setShowOffCanvasNav(true);
