@@ -26,6 +26,11 @@ img.fit {
 header {
   z-index: 999;
 
+  height: calc((0.5rem * 2) + 65px);
+  overflow-y: hidden;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+
   a.title {
     color: $dark;
     text-decoration: none;

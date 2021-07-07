@@ -4,6 +4,11 @@
 
 main.recipe {
   .ingredients {
+    @include media-breakpoint-up(lg) {
+      position: sticky;
+      top: calc((0.5rem * 2) + 65px + 3rem);
+    }
+
     ul {
       @include media-breakpoint-between(sm, lg) {
         columns: 2;

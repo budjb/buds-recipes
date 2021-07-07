@@ -169,7 +169,7 @@ const Layout = ({ children, className, title, query = '' }) => {
             <meta name="robots" content="noindex,nofollow" />
           </Helmet>
 
-          <header className="py-2 container-fluid shadow bg-light position-sticky top-0">
+          <header className="container-fluid shadow bg-light position-sticky top-0">
             <div className="d-flex justify-content-between align-content-center">
               <Link to="/" className="d-block">
                 <GatsbyImage alt="Things We Make" image={data.headerLogo.childImageSharp.gatsbyImageData} />
