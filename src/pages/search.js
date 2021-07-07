@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { graphql, navigate } from 'gatsby';
 import { useFlexSearch } from 'react-use-flexsearch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,8 +14,8 @@ const parseSearch = query => {
 };
 
 const NoResults = ({ query }) => {
-  const searchInput = createRef();
-  const formRef = createRef();
+  const searchInput = useRef();
+  const formRef = useRef();
 
   const handleSearch = event => {
     event.preventDefault();
