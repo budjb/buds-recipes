@@ -34,12 +34,11 @@ const SideBar = ({ children, show, open, close, duration = '0.3s', threshold = 3
 
   useEffect(() => {
     if (isHorizontalSwipe) {
-      document.documentElement.style.touchAction = 'pan-y';
+      document.documentElement.style.overflowY = 'hidden';
     } else {
-      document.documentElement.style.touchAction = 'auto';
+      document.documentElement.style.overflowY = 'visible';
     }
   }, [isHorizontalSwipe]);
-
   /**
    * Event handler for when a swipe has completed.
    */
