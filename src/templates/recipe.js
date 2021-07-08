@@ -25,11 +25,14 @@ const SharePanel = ({ url, name, preview, image }) => {
   if (isBrowser && navigator.share) {
     return (
       <button
-        onClick={navigator.share({
-          url: url,
-          title: name,
-          text: longTitle,
-        })}
+        className="btn border-0 py-0 px-2 shadow-none"
+        onClick={() =>
+          navigator.share({
+            url: url,
+            title: name,
+            text: longTitle,
+          })
+        }
       >
         <FontAwesomeIcon icon={faShareAlt} />
       </button>
