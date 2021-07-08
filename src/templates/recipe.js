@@ -24,7 +24,7 @@ const SharePanel = ({ url, name, preview, image }) => {
 
   if (isBrowser && navigator.share) {
     return (
-      <div className="d-flex flex-row align-items-center">
+      <div className="d-flex flex-row align-items-center py-2">
         <button
           id="shareButton"
           className="btn border-0 p-0 shadow-none"
@@ -36,14 +36,13 @@ const SharePanel = ({ url, name, preview, image }) => {
             })
           }
         >
-          <FontAwesomeIcon icon={faShareAlt} fixedWidth className="me-2" />
+          <FontAwesomeIcon icon={faShareAlt} fixedWidth className="text-muted me-2" /> Share...
         </button>
-        Share...
       </div>
     );
   } else {
     return (
-      <>
+      <div className="py-2 py-md-0">
         <FacebookShareButton url={url} quote={longTitle}>
           <FacebookIcon size={32} />
         </FacebookShareButton>
@@ -55,7 +54,7 @@ const SharePanel = ({ url, name, preview, image }) => {
         <TwitterShareButton url={url} title={longTitle}>
           <TwitterIcon size={32} />
         </TwitterShareButton>
-      </>
+      </div>
     );
   }
 };
@@ -67,7 +66,7 @@ const Markdown = ({ children, renderAs = 'div' }) => {
 
 const StatsItem = ({ children, icon }) => {
   return (
-    <div>
+    <div className="py-2">
       {icon && <FontAwesomeIcon fixedWidth icon={icon} className="text-muted me-2" />}
       {children}
     </div>
@@ -131,7 +130,7 @@ const Recipe = ({ location, data: { recipe } }) => {
           <StatsItem icon={faClock}>{recipe.totalTime}</StatsItem>
           <StatsItem icon={faChartPie}>{recipe.servings}</StatsItem>
 
-          <div className="share-links mt-3 mt-md-0">
+          <div className="share-links">
             <SharePanel
               name={recipe.name}
               url={location.href}
