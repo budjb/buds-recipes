@@ -24,18 +24,22 @@ const SharePanel = ({ url, name, preview, image }) => {
 
   if (isBrowser && navigator.share) {
     return (
-      <button
-        className="btn border-0 py-0 px-2 shadow-none"
-        onClick={() =>
-          navigator.share({
-            url: url,
-            title: name,
-            text: longTitle,
-          })
-        }
-      >
-        <FontAwesomeIcon icon={faShareAlt} />
-      </button>
+      <div className="d-flex flex-row align-items-center">
+        <button
+          id="shareButton"
+          className="btn border-0 p-0 shadow-none"
+          onClick={() =>
+            navigator.share({
+              url: url,
+              title: name,
+              text: longTitle,
+            })
+          }
+        >
+          <FontAwesomeIcon icon={faShareAlt} fixedWidth className="me-2" />
+        </button>
+        Share...
+      </div>
     );
   } else {
     return (
@@ -63,7 +67,7 @@ const Markdown = ({ children, renderAs = 'div' }) => {
 
 const StatsItem = ({ children, icon }) => {
   return (
-    <div className="px-1 py-2 py-md-3">
+    <div>
       {icon && <FontAwesomeIcon fixedWidth icon={icon} className="text-muted me-2" />}
       {children}
     </div>
@@ -71,7 +75,11 @@ const StatsItem = ({ children, icon }) => {
 };
 
 const StatsBar = ({ children }) => {
-  return <div className="d-block d-md-flex flex-row align-content-center justify-content-between my-2">{children}</div>;
+  return (
+    <div className="d-block d-md-flex flex-row align-items-center justify-content-between my-2 py-2 py-md-3">
+      {children}
+    </div>
+  );
 };
 
 const IngredientSection = ({ ingredients, name }) => {
@@ -122,7 +130,15 @@ const Recipe = ({ location, data: { recipe } }) => {
           <StatsItem icon={faUser}>{recipe.author}</StatsItem>
           <StatsItem icon={faClock}>{recipe.totalTime}</StatsItem>
           <StatsItem icon={faChartPie}>{recipe.servings}</StatsItem>
-          <StatsItem icon={faTag}>{recipe.cuisine}</StatsItem>
+
+          <div className="share-links mt-3 mt-md-0">
+            <SharePanel
+              name={recipe.name}
+              url={location.href}
+              preview={recipe.preview}
+              image={recipe.imageFiles[0].fullSize.gatsbyImageData.images.fallback.src}
+            />
+          </div>
         </StatsBar>
 
         <h1 className="my-3 display-4">{recipe.name}</h1>
@@ -164,15 +180,6 @@ const Recipe = ({ location, data: { recipe } }) => {
             <Markdown>{recipe.tips}</Markdown>
           </div>
         )}
-
-        <div className="py-3 d-flex justify-content-end share-links">
-          <SharePanel
-            name={recipe.name}
-            url={location.href}
-            preview={recipe.preview}
-            image={recipe.imageFiles[0].fullSize.gatsbyImageData.images.fallback.src}
-          />
-        </div>
       </div>
     </Layout>
   );
