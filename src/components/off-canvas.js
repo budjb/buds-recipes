@@ -2,6 +2,13 @@ import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef,
 import _ from 'lodash';
 import { useSwipeable } from 'react-swipeable';
 
+/**
+ * Transitions the off-canvas to a percentage open with a given animation duration, in milliseconds.
+ *
+ * @param element
+ * @param duration
+ * @param percent
+ */
 const doTransition = (element, duration, percent) => {
   element.style.transform = `translateX(-${percent}%)`;
   element.style.transitionDuration = duration + 'ms';
@@ -86,17 +93,15 @@ export const OffCanvas = forwardRef(({ children, duration = 300, threshold = 33 
 
     if (isOpen) {
       if (deltaPercent < threshold) {
-        doTransition(element, duration, 100);
+        open();
       } else {
-        doTransition(element, animationTime, 0);
-        setOpen(false);
+        close(animationTime);
       }
     } else {
       if (deltaPercent < threshold) {
-        doTransition(element, duration, 0);
+        close();
       } else {
-        doTransition(element, animationTime, 100);
-        setOpen(true);
+        open(animationTime);
       }
     }
 
@@ -125,8 +130,6 @@ export const OffCanvas = forwardRef(({ children, duration = 300, threshold = 33 
 
   /**
    * Swipe configuration.
-   *
-   * @type {SwipeableHandlers}
    */
   const swipeHandlers = useSwipeable({
     delta: 16,
