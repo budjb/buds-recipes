@@ -61,4 +61,8 @@ main.recipe {
       margin: 1rem 0;
     }
   }
+
+  .share-links > *:not(:last-child) {
+    margin-right: 0.5rem;
+  }
 }

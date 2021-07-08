@@ -1,15 +1,57 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartPie, faClock, faLightbulb, faTag, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faChartPie, faClock, faLightbulb, faShareAlt, faTag, faUser } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../templates/layout';
 import marked from 'marked';
 import { ImageGallery } from '../components/image-gallery';
-
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  PinterestIcon,
+  PinterestShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+} from 'react-share';
 import '../scss/recipe.scss';
 import { GatsbyImage } from 'gatsby-plugin-image';
 
 const sanitizeHtml = require('sanitize-html');
+
+const SharePanel = ({ url, name, preview, image }) => {
+  const isBrowser = typeof navigator !== 'undefined';
+  const longTitle = preview ? `${name} - ${preview}` : name;
+
+  if (isBrowser && navigator.share) {
+    return (
+      <button
+        onClick={navigator.share({
+          url: url,
+          title: name,
+          text: longTitle,
+        })}
+      >
+        <FontAwesomeIcon icon={faShareAlt} />
+      </button>
+    );
+  } else {
+    return (
+      <>
+        <FacebookShareButton url={url} quote={longTitle}>
+          <FacebookIcon size={32} />
+        </FacebookShareButton>
+
+        <PinterestShareButton url={url} media={image} description={longTitle}>
+          <PinterestIcon size={32} />
+        </PinterestShareButton>
+
+        <TwitterShareButton url={url} title={longTitle}>
+          <TwitterIcon size={32} />
+        </TwitterShareButton>
+      </>
+    );
+  }
+};
 
 const Markdown = ({ children, renderAs = 'div' }) => {
   const RenderAs = renderAs;
@@ -63,12 +105,8 @@ const InstructionsSection = ({ instructions, name }) => {
 
 /**
  * Renders a recipe as retrieved by GraphQL.
- *
- * @param data
- * @returns {JSX.Element}
- * @constructor
  */
-const Recipe = ({ data: { recipe } }) => {
+const Recipe = ({ location, data: { recipe } }) => {
   return (
     <Layout className="recipe d-flex justify-content-center" title={recipe.name}>
       <div className="col-12 col-lg-10">
@@ -123,6 +161,15 @@ const Recipe = ({ data: { recipe } }) => {
             <Markdown>{recipe.tips}</Markdown>
           </div>
         )}
+
+        <div className="py-3 d-flex justify-content-end share-links">
+          <SharePanel
+            name={recipe.name}
+            url={location.href}
+            preview={recipe.preview}
+            image={recipe.imageFiles[0].fullSize.gatsbyImageData.images.fallback.src}
+          />
+        </div>
       </div>
     </Layout>
   );
@@ -132,6 +179,11 @@ export default Recipe;
 
 export const pageQuery = graphql`
   query RecipeById($id: String!) {
+    site {
+      siteMetadata {
+        siteUrl
+      }
+    }
     recipe(id: { eq: $id }) {
       author
       cuisine

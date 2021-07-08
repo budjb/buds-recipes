@@ -7,6 +7,8 @@ import _ from 'lodash';
 import '../scss/layout.scss';
 import { Helmet } from 'react-helmet';
 import { GatsbyImage } from 'gatsby-plugin-image';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBars} from "@fortawesome/free-solid-svg-icons";
 
 const topCategories = categories => {
   return _.orderBy(categories, ['totalCount', 'fieldValue'], ['desc', 'asc']).splice(0, 5);
@@ -86,7 +88,7 @@ const Layout = ({ children, className, title, query = '' }) => {
                 <GatsbyImage alt="Things We Make" image={data.headerLogo.childImageSharp.gatsbyImageData} />
               </Link>
               <button type="button" className="btn border-0 py-0 px-2 shadow-none" onClick={showNav}>
-                <i className={`bi bi-list btn text-dark p-0 fs-1`} />
+                <FontAwesomeIcon icon={faBars} size="2x" fixedWidth/>
               </button>
             </div>
 

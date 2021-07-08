@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: 'Things We Make',
+    siteUrl: 'https://recipes.budjb.com',
   },
   plugins: [
     'gatsby-plugin-sass',
