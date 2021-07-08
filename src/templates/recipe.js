@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartPie, faClock, faLightbulb, faShareAlt, faTag, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faChartPie, faClock, faLightbulb, faShareAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../templates/layout';
 import marked from 'marked';
 import { ImageGallery } from '../components/image-gallery';
@@ -116,7 +116,10 @@ const InstructionsSection = ({ instructions, name }) => {
 /**
  * Renders a recipe as retrieved by GraphQL.
  */
-const Recipe = ({ location, data: { recipe } }) => {
+const Recipe = ({ location, data }) => {
+  const recipe = data.recipe;
+  const siteUrl = data.site.siteMetadata.siteUrl;
+
   return (
     <Layout className="recipe d-flex justify-content-center" title={recipe.name}>
       <div className="col-12 col-lg-10">
@@ -135,7 +138,7 @@ const Recipe = ({ location, data: { recipe } }) => {
               name={recipe.name}
               url={location.href}
               preview={recipe.preview}
-              image={recipe.imageFiles[0].fullSize.gatsbyImageData.images.fallback.src}
+              image={siteUrl + recipe.imageFiles[0].fullSize.gatsbyImageData.images.fallback.src}
             />
           </div>
         </StatsBar>
