@@ -1,0 +1,41 @@
+name: Enchilada Sauce
+published: 2021-07-08T18:51:00-0500
+author: Christina Lucio
+preview: Because dry enchiladas are boring!
+images:
+  - https://res.cloudinary.com/hksqkdlah/image/upload/44391-sfs-tex-mex-cheese-enchiladas-for-two-33.jpg
+totalTime: 30 minutes
+keywords:
+  - mexican
+  - enchiladas
+  - sauce
+categories:
+  - mexican
+  - sauces
+servings: ∞
+cuisine: Tex-Mex
+ingredientSections:
+  - ingredients:
+      - 1 lb ground beef
+      - 1 4 oz can tomato sauce
+      - 1 cup water
+      - 1 tomato bouillon cube
+      - 'TODO: garlic powder'
+      - 'TODO: comino'
+      - 3 tbsp chili powder
+      - 'TODO: salt'
+      - 'TODO: pepper'
+      - 2 tsp  corn starch
+instructionSections:
+  - instructions:
+      - In a pan, brown the ground beef. Once the ground beef is browned, drain the the grease from the pan.
+      - Add the can of tomato sauce to the pan. Add some of the water to the can and swish it around
+        to release the rest of the tomato sauce that remained in the can, and add it and the rest of the
+        water to the pan.
+      - Break up the bouillon cube, and add it to the pan.
+      - Add the garlic powder, comino, chili powder, salt, and pepper to the pan, and mix the contents
+        together so that everything is incorporated.
+      - 'TODO: do we need to heat this before adding starch?'
+      - Add the corn starch to ¼ cup of water and stir until all of the corn starch has dissolved.
+        Add the corn starch slurry into the pan and stir slowly until the sauce thickens.
+      - Simmer the sauce for 10 to 15 minutes.
