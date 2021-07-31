@@ -95,9 +95,9 @@ const SearchPage = ({ data, location }) => {
             {results.map(recipe => (
               <RecipeCard
                 key={recipe.id}
-                name={recipe.name}
+                title={recipe.title}
                 path={recipe.path}
-                preview={recipe.preview}
+                subTitle={recipe.subTitle}
                 photo={recipe.coverImage}
               />
             ))}

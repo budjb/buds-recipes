@@ -23,9 +23,9 @@ const CategoryPage = ({ data, pageContext }) => {
               <RecipeCard
                 key={recipe.id}
                 path={recipe.path}
-                name={recipe.name}
+                title={recipe.title}
                 photo={recipe.imageFiles[0].childImageSharp.gatsbyImageData}
-                preview={recipe.preview}
+                subTitle={recipe.subTitle}
               />
             );
           })}
@@ -42,9 +42,9 @@ export const pageQuery = graphql`
     allRecipe(filter: { categories: { eq: $slug } }) {
       nodes {
         id
-        name
+        title
         path
-        preview
+        subTitle
         imageFiles {
           childImageSharp {
             gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, sizes: "275,700", aspectRatio: 1.5)

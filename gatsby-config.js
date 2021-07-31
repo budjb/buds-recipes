@@ -40,9 +40,9 @@ module.exports = {
             nodes {
               id
               keywords
-              name
+              title
               path
-              preview
+              subTitle
               imageFiles {
                 childImageSharp {
                   gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, sizes: "275,700", aspectRatio: 1.5)
@@ -52,16 +52,16 @@ module.exports = {
           }
         }`,
         ref: 'id',
-        index: ['name', 'keywords'],
-        store: ['id', 'name', 'path', 'coverImage', 'preview'],
+        index: ['title', 'keywords'],
+        store: ['id', 'title', 'path', 'coverImage', 'subTitle'],
 
         normalizer: ({ data }) => {
           return data.allRecipe.nodes.map(node => ({
             id: node.id,
-            name: node.name,
+            title: node.title,
             keywords: node.keywords,
             path: node.path,
-            preview: node.preview,
+            subTitle: node.subTitle,
             coverImage: node.imageFiles && node.imageFiles[0].childImageSharp.gatsbyImageData,
           }));
         },

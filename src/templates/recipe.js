@@ -18,9 +18,9 @@ import { GatsbyImage } from 'gatsby-plugin-image';
 
 const sanitizeHtml = require('sanitize-html');
 
-const SharePanel = ({ url, name, preview, image }) => {
+const SharePanel = ({ url, title, subTitle, image }) => {
   const isBrowser = typeof navigator !== 'undefined';
-  const longTitle = preview ? `${name} - ${preview}` : name;
+  const longTitle = subTitle ? `${title} - ${subTitle}` : title;
 
   if (isBrowser && navigator.share) {
     return (
@@ -31,7 +31,7 @@ const SharePanel = ({ url, name, preview, image }) => {
           onClick={() =>
             navigator.share({
               url: url,
-              title: name,
+              title: title,
               text: longTitle,
             })
           }
@@ -81,8 +81,8 @@ const StatsBar = ({ children }) => {
   );
 };
 
-const IngredientSection = ({ ingredients, name }) => {
-  const nameContent = name && <strong>{name}</strong>;
+const IngredientSection = ({ ingredients, title }) => {
+  const titleContent = title && <strong>{title}</strong>;
   const ingredientContent = ingredients.map((text, i) => (
     <li key={i} className="py-2">
       {text}
@@ -91,14 +91,14 @@ const IngredientSection = ({ ingredients, name }) => {
 
   return (
     <>
-      {nameContent}
+      {titleContent}
       <ul>{ingredientContent}</ul>
     </>
   );
 };
 
-const InstructionsSection = ({ instructions, name }) => {
-  const nameContent = name && <strong>{name}</strong>;
+const InstructionsSection = ({ instructions, title }) => {
+  const titleContent = title && <strong>{title}</strong>;
   const instructionContent = instructions.map((text, i) => (
     <Markdown renderAs="li" key={i}>
       {text}
@@ -107,7 +107,7 @@ const InstructionsSection = ({ instructions, name }) => {
 
   return (
     <>
-      {nameContent}
+      {titleContent}
       <ol>{instructionContent}</ol>
     </>
   );
@@ -121,11 +121,11 @@ const Recipe = ({ location, data }) => {
   const siteUrl = data.site.siteMetadata.siteUrl;
 
   return (
-    <Layout className="recipe d-flex justify-content-center" title={recipe.name}>
+    <Layout className="recipe d-flex justify-content-center" title={recipe.title}>
       <div className="col-12 col-lg-10">
         <ImageGallery>
           {recipe.imageFiles.map(({ fullSize: { gatsbyImageData: image } }, i) => (
-            <GatsbyImage key={i} alt={recipe.name} image={image} />
+            <GatsbyImage key={i} alt={recipe.title} image={image} />
           ))}
         </ImageGallery>
         <StatsBar>
@@ -135,16 +135,16 @@ const Recipe = ({ location, data }) => {
 
           <div className="share-links">
             <SharePanel
-              name={recipe.name}
+              title={recipe.title}
               url={location.href}
-              preview={recipe.preview}
+              subTitle={recipe.subTitle}
               image={siteUrl + recipe.imageFiles[0].fullSize.gatsbyImageData.images.fallback.src}
             />
           </div>
         </StatsBar>
 
-        <h1 className="my-3 display-4">{recipe.name}</h1>
-        <h3>{recipe.preview}</h3>
+        <h1 className="my-3 display-4">{recipe.title}</h1>
+        <h3>{recipe.subTitle}</h3>
 
         {recipe.description && (
           <div className="my-5">
@@ -158,7 +158,7 @@ const Recipe = ({ location, data }) => {
               <div className="ingredients bg-light-site p-3">
                 <h1>Ingredients</h1>
                 {recipe.ingredientSections.map((section, i) => {
-                  return <IngredientSection key={i} name={section.name} ingredients={section.ingredients} />;
+                  return <IngredientSection key={i} title={section.title} ingredients={section.ingredients} />;
                 })}
               </div>
             </div>
@@ -167,7 +167,7 @@ const Recipe = ({ location, data }) => {
               <h1 className="py-3 m-0">Instructions</h1>
               {recipe.instructionSections.map((section, i) => (
                 <div className="instruction-set" key={i}>
-                  <InstructionsSection name={section.name} instructions={section.instructions} />
+                  <InstructionsSection title={section.title} instructions={section.instructions} />
                 </div>
               ))}
             </div>
@@ -202,16 +202,16 @@ export const pageQuery = graphql`
       description
       published
       ingredientSections {
-        name
+        title
         ingredients
       }
       instructionSections {
-        name
+        title
         instructions
       }
       tips
-      preview
-      name
+      subTitle
+      title
       servings
       totalTime
       imageFiles {

@@ -1,7 +1,7 @@
-name: Flour Tortillas
+title: Flour Tortillas
+subTitle: A staple of any Mexican meal.
 published: 2021-07-07T23:26:00-0500
 author: Bud Byrd
-preview: A staple of any Mexican meal.
 images:
   - https://i1.wp.com/thecookstreat.com/wp-content/uploads/2020/04/HomemadeFlourTortillas5.jpg?resize=800%2C533&ssl=1
 totalTime: 30 minutes
@@ -21,7 +21,7 @@ ingredientSections:
       - 2½ tbsp manteca (lard)
       - ¾ cup warm/hot water
 instructionSections:
-  - name: Preparing the Dough
+  - title: Preparing the Dough
     instructions:
       - Combine the flour, salt, and baking powder in a mixing bowl.
       - Add the manteca to the mixing bowl. Using your hands, work the flour mixture
@@ -31,7 +31,7 @@ instructionSections:
       - Break small chunks of the dough from the dough ball and fold them into discs. You can
         experiment with how large the chunks are. The larger the chunk, the larger the tortilla.
       - Cover the dough chunks and let them rest for 15 minutes.
-  - name: Rolling and Heating
+  - title: Rolling and Heating
     instructions:
       - Heat a comal with medium-high heat.
       - Dust your working surface with a light layer of flour.

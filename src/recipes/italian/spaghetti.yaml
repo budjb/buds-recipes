@@ -1,7 +1,7 @@
-name: Spaghetti
+title: Spaghetti
+subTitle: Italian goodness with an easy home-made sauce.
 published: 2021-07-04T13:57:00-0500
 author: Bud Byrd
-preview: Italian goodness with an easy home-made sauce.
 description: |+
   I am not a big fan of overly saucy spaghetti, nor am I fan of canned sauces since they're
   all usually sweetened. I think spaghetti should be more balanced, where the sauce adds
@@ -32,7 +32,7 @@ ingredientSections:
       - 1 tsp kosher salt
       - 1 large fresh basil sprig
 instructionSections:
-  - name: Preparation
+  - title: Preparation
     instructions:
       - Prepare pasta according to package instructions, al dente.
       - In a large bowl, crush the tomatos by hand.

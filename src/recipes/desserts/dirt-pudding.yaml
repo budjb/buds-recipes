@@ -1,7 +1,7 @@
-name: Dirt Pudding
+title: Dirt Pudding
+subTitle: A holiday favorite that will have everyone coming back for seconds.
 published: 2021-06-19T16:06:00-0500
 author: Bud Byrd
-preview: A holiday favorite that will have everyone coming back for seconds.
 images:
   - https://tmbidigitalassetsazure.blob.core.windows.net/rms3-prod/attachments/37/1200x1200/exps20334_EWD153732B03_27_9b.jpg
 totalTime: 30 minutes
@@ -19,12 +19,12 @@ ingredientSections:
       - 3½ cups of cold milk
       - 1 12 oz container of cool whip
 instructionSections:
-  - name: Preparation
+  - title: Preparation
     instructions:
       - Allow the butter and cream cheese to warm up to room temperature.
       - In a blender or food processor, crush the whole package of Oreo cookies. Try to crush the
         Oreos so that you end up with both crumbles and chunks.
-  - name: Pudding Mixture
+  - title: Pudding Mixture
     instructions:
       - In a large bowl, combine the butter and cream cheese together with a mixer. Mix until the
         the butter and cream cheese are well blended and mostly smooth. The cream cheese may not
@@ -33,7 +33,7 @@ instructionSections:
         Slowly mix with gradually increasing speed until the mixture has thickened.
       - Fold the cool whip into the pudding mixture. It is important to not mix the cool whip into
         the pudding so that the texture remains light and airy.
-  - name: Assembly
+  - title: Assembly
     instructions:
       - Line the bottom of a large bowl with a layer of the crushed Oreo cookies.
       - Add a layer of the pudding mixture on top of the Oreo cookie layer. This layer should be

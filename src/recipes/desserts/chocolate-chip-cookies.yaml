@@ -1,7 +1,7 @@
-name: Chocolate Chip Cookies
+title: Chocolate Chip Cookies
+subTitle: Emphasis on the chocolate.
 published: 2021-06-23T18:14:00-0500
 author: Bud Byrd
-preview: Emphasis on the chocolate.
 images:
   - gphotos:///00100lrPORTRAIT_00100_BURST20191224154240671_COVER.jpg
 totalTime: 2 hrs
@@ -20,7 +20,7 @@ ingredientSections:
       - 1¼ cups all-purpose flour
       - 24 oz semi-sweet chocolate chips
 instructionSections:
-  - name: Preparation
+  - title: Preparation
     instructions:
       - In a large mixing bowl, mix the granulated sugar, brown sugar, salt, and butter until
         well mixed with no clumps.
@@ -30,7 +30,7 @@ instructionSections:
         texture.
       - Fold in the chocolate chips.
       - Cover and chill the dough for a least an hour. Chill overnight for a more complex flavor.
-  - name: Baking
+  - title: Baking
     instructions:
       - Preheat the oven to 350°F.
       - Line a baking sheet with parchment paper.

@@ -67,12 +67,12 @@ exports.createSchemaCustomization = ({ actions }) => {
 
   createTypes(`
     type IngredientSection {
-      name: String
+      title: String
       ingredients: [String!]!
     }
     
     type InstructionSection {
-      name: String
+      title: String
       instructions: [String!]!
     }
     
@@ -82,12 +82,12 @@ exports.createSchemaCustomization = ({ actions }) => {
       cuisine: String!
       totalTime: String!
       servings: String!
-      name: String!
+      title: String!
       keywords: [String!]
       categories: [String!]!
       published: Date!
       author: String!
-      preview: String!
+      subTitle: String!
       description: String
       imageFiles: [File] @link(from: "imageFiles___NODE")
       ingredientSections: [IngredientSection!]!

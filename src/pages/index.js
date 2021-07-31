@@ -44,9 +44,9 @@ const IndexPage = ({ data }) => {
           {latest.map(recipe => (
             <RecipeCard
               key={recipe.id}
-              name={recipe.name}
+              title={recipe.title}
               path={recipe.path}
-              preview={recipe.preview}
+              subTitle={recipe.subTitle}
               photo={recipe.imageFiles[0].childImageSharp.gatsbyImageData}
             />
           ))}
@@ -74,8 +74,8 @@ export const pageQuery = graphql`
       nodes {
         id
         path
-        name
-        preview
+        title
+        subTitle
         imageFiles {
           childImageSharp {
             gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED, sizes: "275,700", aspectRatio: 1.5)
