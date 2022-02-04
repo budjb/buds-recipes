@@ -9,10 +9,14 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     {
-      resolve: 'gatsby-source-google-photos',
+      resolve: `gatsby-source-s3`,
       options: {
-        albumsTitles: ['Recipes Website'],
-        photosMaxWidth: 1280,
+        aws: {
+          accessKeyId: process.env.TWM_AWS_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.TWM_AWS_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY,
+          region: process.env.TWM_AWS_REGION || process.env.AWS_REGION,
+        },
+        buckets: ['things-we-make'],
       },
     },
     {
