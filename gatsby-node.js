@@ -88,7 +88,8 @@ exports.createSchemaCustomization = ({ actions }) => {
       author: String!
       subTitle: String!
       description: String
-      imageFiles: [File] @link(from: "imageFiles___NODE")
+      imageIds: [ID!]!
+      imageFiles: [File] @link(from: "fields.imageIds")
       ingredientSections: [IngredientSection!]!
       instructionSections: [InstructionSection!]!
       tips: String
@@ -100,7 +101,7 @@ exports.createSchemaCustomization = ({ actions }) => {
 exports.onCreateNode = async ({
   node,
   loadNodeContent,
-  actions: { createNode, createParentChildLink },
+  actions: { createNode, createParentChildLink, createNodeField },
   createNodeId,
   createContentDigest,
   store,
@@ -135,19 +136,19 @@ exports.onCreateNode = async ({
 
     return recipeNode;
   } else if (node.internal.type === 'Recipe') {
-    if (node.images.length) {
-      const imageIds = await findImageIds({
-        nodeId: node.id,
-        images: node.images,
-        getNodesByType,
-        createNode,
-        createNodeId,
-        cache,
-        store,
-      });
+    const imageIds = nodes.images?.length
+      ? await findImageIds({
+          nodeId: node.id,
+          images: node.images,
+          getNodesByType,
+          createNode,
+          createNodeId,
+          cache,
+          store,
+        })
+      : [];
 
-      node.imageFiles___NODE = imageIds;
-    }
+    createNodeField({ node, name: 'imageIds', value: imageIds });
   }
 };
 
