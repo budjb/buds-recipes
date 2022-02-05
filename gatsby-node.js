@@ -136,7 +136,7 @@ exports.onCreateNode = async ({
 
     return recipeNode;
   } else if (node.internal.type === 'Recipe') {
-    const imageIds = nodes.images?.length
+    const imageIds = node.images?.length
       ? await findImageIds({
           nodeId: node.id,
           images: node.images,
