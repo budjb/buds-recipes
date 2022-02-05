@@ -3,7 +3,6 @@ subTitle: Emphasis on the chocolate.
 published: 2021-06-23T18:14:00-0500
 author: Bud Byrd
 images:
-  # - gphotos:///00100lrPORTRAIT_00100_BURST20191224154240671_COVER.jpg
   - s3:///chocolate-chip-cookies.jpg
 totalTime: 2 hrs
 categories:
