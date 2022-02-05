@@ -3,7 +3,7 @@ import { graphql } from 'gatsby';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartPie, faClock, faLightbulb, faShareAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../templates/layout';
-import marked from 'marked';
+import { marked } from 'marked';
 import { ImageGallery } from '../components/image-gallery';
 import {
   FacebookIcon,
