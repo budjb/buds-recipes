@@ -1,0 +1,37 @@
+title: Old Fashioned
+subTitle: A classic way to enjoy whiskey.
+published: 2022-02-08T20:45:00-0500
+author: Bud Byrd
+description: |+
+  The old fashioned has turned into my favorite way to drink whiskey. This recipe is how I make mine. It's not the
+  classic method that uses a fresh orange peel or zest and a sugar cube, but it instead focuses on using easily-poured
+  ingredients with no mess and no waste.
+images:
+  - s3:///old-fashioned.jpg
+totalTime: 2 min
+categories:
+  - drinks
+servings: '1'
+cuisine: Drinks
+ingredientSections:
+  - ingredients:
+      - 3 oz whiskey
+      - ½ oz simple syrup
+      - ½ triple sec
+      - 3 dashes bitters
+      - 2 luxardo cherries
+      - 1 large ice cube
+instructionSections:
+  - instructions:
+      - Add the large ice cube to a whiskey glass.
+      - Add all ingredients to the glass and stir well.
+      - Enjoy!
+tips: |+
+  This is a whiskey drink, so use your favorite whiskey! This is incredibly subjective, but bourbon works very well
+  with this drink. I'll typically use one of the following in mind:
+
+  * Rebecca Creek
+  * Maker's Mark
+  * Angel's Envy
+
+  Whatever you do, don't drink cheap alcohol (aka battery cleaner). Life's too short for cheap alcohol!
