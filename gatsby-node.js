@@ -1,6 +1,6 @@
 const path = require(`path`);
 const yaml = require('js-yaml');
-const { onCreateWebpackConfig, findImageIds } = require('./src/gatsby-util');
+const { onCreateWebpackConfig, findImageIds } = require('./gatsby-util');
 
 const _ = require('lodash');
 
@@ -61,9 +61,7 @@ exports.createPages = async ({ graphql, actions }) => {
   }
 };
 
-exports.createSchemaCustomization = ({ actions }) => {
-  const { createTypes } = actions;
-
+exports.createSchemaCustomization = ({ actions: { createTypes } }) => {
   createTypes(`
     type IngredientSection {
       title: String

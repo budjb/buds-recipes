@@ -88,5 +88,6 @@ module.exports = {
       },
     },
     'gatsby-plugin-offline',
+    'gatsby-plugin-catch-links',
   ],
 };
