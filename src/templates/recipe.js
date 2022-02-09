@@ -84,9 +84,9 @@ const StatsBar = ({ children }) => {
 const IngredientSection = ({ ingredients, title }) => {
   const titleContent = title && <strong>{title}</strong>;
   const ingredientContent = ingredients.map((text, i) => (
-    <li key={i} className="py-2">
+    <Markdown renderAs="li" className="py-2" key={i}>
       {text}
-    </li>
+    </Markdown>
   ));
 
   return (

@@ -20,7 +20,7 @@ cuisine: BBQ
 ingredientSections:
   - ingredients:
       - 1 5lb boneless turkey breast
-      - S2P Rub
+      - '[S2P Rub](/recipes/s2p)'
       - 1 cup unsalted butter
 instructionSections:
   - title: Preparation
