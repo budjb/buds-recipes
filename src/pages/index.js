@@ -70,7 +70,7 @@ export const pageQuery = graphql`
         gatsbyImageData(layout: CONSTRAINED, sizes: "400,675", aspectRatio: 1.5)
       }
     }
-    latest: allRecipe(limit: 4, sort: { fields: published, order: DESC }) {
+    latest: allRecipe(limit: 4, sort: { published: DESC }) {
       nodes {
         id
         path

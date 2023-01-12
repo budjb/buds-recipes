@@ -47,7 +47,7 @@ export default Categories;
 export const pageQuery = graphql`
   query CategoriesPageQuery {
     categories: allRecipe {
-      group(field: categories) {
+      group(field: { categories: SELECT }) {
         fieldValue
         totalCount
       }
