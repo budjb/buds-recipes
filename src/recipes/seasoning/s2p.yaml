@@ -7,7 +7,7 @@ description: |+
   I usually use this while making [Texas style smoked turkey breast](/recipes/texas-style-turkey). This rub works best on meats that
   have been brined and so already contain some salt content.
 images:
-  - http://www.themeaningofpie.com/wp-content/uploads/2018/12/Salt-and-Pepper-22.jpg
+  - s3:///sp.jpg
 totalTime: 5 minutes
 keywords:
   - salt and pepper

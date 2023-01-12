@@ -64,7 +64,7 @@ const Layout = ({ children, className, title, query = '' }) => {
             }
           }
           categories: allRecipe {
-            group(field: categories) {
+            group(field: { categories: SELECT }) {
               fieldValue
               totalCount
             }

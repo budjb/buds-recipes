@@ -17,7 +17,7 @@ description: |+
 
   This rub is obviously great on beef BBQ, but it also works really well on steaks!
 images:
-  - http://www.themeaningofpie.com/wp-content/uploads/2018/12/Salt-and-Pepper-22.jpg
+  - s3:///sp.jpg
 totalTime: 5 minutes
 keywords:
   - salt and pepper

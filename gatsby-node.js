@@ -23,7 +23,7 @@ exports.createPages = async ({ graphql, actions }) => {
           }
         }
         categories: allRecipe {
-          group(field: categories) {
+          group(field: { categories: SELECT }) {
             fieldValue
           }
         }
