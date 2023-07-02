@@ -1,8 +1,8 @@
 {
-  "name": "bud-s-recipes",
+  "name": "things-we-make",
   "version": "1.0.0",
   "private": true,
-  "description": "Bud's Recipes",
+  "description": "Things We Make",
   "author": "Bud Byrd",
   "keywords": [
     "gatsby"
