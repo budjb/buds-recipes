@@ -61,7 +61,18 @@ const SharePanel = ({ url, title, subTitle, image }) => {
 
 const Markdown = ({ children, renderAs = 'div' }) => {
   const RenderAs = renderAs;
-  return <RenderAs dangerouslySetInnerHTML={{ __html: sanitizeHtml(marked(children)) }} />;
+  return (
+    <RenderAs
+      dangerouslySetInnerHTML={{
+        __html: sanitizeHtml(
+          marked(children, {
+            headerIds: false,
+            mangle: false,
+          })
+        ),
+      }}
+    />
+  );
 };
 
 const StatsItem = ({ children, icon }) => {
