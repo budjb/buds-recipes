@@ -37,7 +37,7 @@
     "gatsby-plugin-sharp": "^5.4.0",
     "gatsby-source-filesystem": "^5.4.0",
     "gatsby-source-s3": "^4.1.1",
-    "gatsby-transformer-sharp": "^5.4.0",
+    "gatsby-transformer-sharp": "^5.12.1",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "marked": "^5.1.0",
