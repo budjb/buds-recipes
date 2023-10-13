@@ -40,7 +40,7 @@
     "gatsby-transformer-sharp": "^5.12.1",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "marked": "^5.1.0",
+    "marked": "^9.1.2",
     "postcss": "^8.4.31",
     "prettier": "^2.3.1",
     "react": "^18.2.0",
