@@ -14,7 +14,7 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "token": "gatsby-source-google-photos-token",
-    "format": "prettier --write \"**/*.{js,jsx,json,md,css,scss}\""
+    "format": "prettier --write \"**/*.{js,jsx,json,md,css,scss,yml,yaml}\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
